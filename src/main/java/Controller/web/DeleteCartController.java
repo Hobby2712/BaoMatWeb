@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import DAO.CartDAO;
 import DaoImpl.CartDAOImpl;
 import Entity.User;
@@ -30,7 +32,7 @@ public class DeleteCartController extends HttpServlet {
     	HttpSession session = request.getSession();
 		User u = (User) session.getAttribute("acc");
 		
-        int pid = Integer.parseInt(request.getParameter("pid"));
+        int pid = Integer.parseInt(StringEscapeUtils.escapeHtml4(request.getParameter("pid")));
         
         CartDAO dao = new CartDAOImpl();
         dao.deleteItemCart(dao.getCartIdByUId(u.getId()),pid);

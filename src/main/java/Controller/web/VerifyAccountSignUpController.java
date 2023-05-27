@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import DAO.CategoryDAO;
 import DAO.UserDAO;
 import DaoImpl.CategoryDAOImpl;
@@ -37,6 +39,7 @@ public class VerifyAccountSignUpController extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
 
+<<<<<<< HEAD
 		String email = request.getParameter("email");
 		String user = request.getParameter("user");
 		String pass = request.getParameter("pass");
@@ -50,6 +53,13 @@ public class VerifyAccountSignUpController extends HttpServlet {
 		}
 		System.out.print(otp_send);
 		System.out.print(OTPSend);
+=======
+		String email = StringEscapeUtils.escapeHtml4(request.getParameter("email"));
+		String user = StringEscapeUtils.escapeHtml4(request.getParameter("user"));
+		String pass = StringEscapeUtils.escapeHtml4(request.getParameter("pass"));
+		String otp = StringEscapeUtils.escapeHtml4(request.getParameter("otp"));
+		String otp_send = StringEscapeUtils.escapeHtml4(request.getParameter("otpSend"));
+>>>>>>> 1f4540f (Done XSS full)
 		
 		//Category(Header)
 		List<Category> clist = category.getAllCategory1();

@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import DAO.OrderDAO;
 import DaoImpl.OrderDAOImpl;
 
@@ -26,8 +28,8 @@ public class UpdateStatusShipperController extends HttpServlet {
     	response.setCharacterEncoding("UTF-8");
     	request.setCharacterEncoding("UTF-8");
 		
-        int id = Integer.parseInt(request.getParameter("id"));
-        int status = Integer.parseInt(request.getParameter("status"));
+        int id = Integer.parseInt(StringEscapeUtils.escapeHtml4(request.getParameter("id")));
+        int status = Integer.parseInt(StringEscapeUtils.escapeHtml4(request.getParameter("status")));
         
         dao.updateOrderStatus(id, status);
         response.sendRedirect("homeShipper?status="+status);

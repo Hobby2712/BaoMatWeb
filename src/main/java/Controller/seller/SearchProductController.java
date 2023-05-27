@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import DAO.CategoryDAO;
 import DAO.ProductDAO;
 import DAO.StoreDAO;
@@ -40,8 +42,8 @@ public class SearchProductController extends HttpServlet {
 		HttpSession session = req.getSession();
 		User u = (User) session.getAttribute("acc");
 
-		String search = req.getParameter("txt").trim();
-		String indexS = req.getParameter("index");
+		String search = StringEscapeUtils.escapeHtml4(req.getParameter("txt").trim());
+		String indexS = StringEscapeUtils.escapeHtml4(req.getParameter("index"));
 		if (indexS == null) {
 			indexS = "1";
 		}

@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import DAO.CartDAO;
 import DAO.CategoryDAO;
 import DAO.ProductDAO;
@@ -37,6 +39,7 @@ public class ShopController extends HttpServlet{
 		resp.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");
 		
+<<<<<<< HEAD
 		// trước 
 		//int index = Integer.parseInt(req.getParameter("index"));
 		//	sau
@@ -55,6 +58,9 @@ public class ShopController extends HttpServlet{
 		}
 		
 		
+=======
+		int index = Integer.parseInt(StringEscapeUtils.escapeHtml4(req.getParameter("index")));
+>>>>>>> 1f4540f (Done XSS full)
 		
 		//Product
 		List<Product> plist = product.getAllProduct(index);

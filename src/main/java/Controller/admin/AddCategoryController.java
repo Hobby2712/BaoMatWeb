@@ -15,6 +15,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.text.StringEscapeUtils;
 
 import DAO.CategoryDAO;
 import DaoImpl.CategoryDAOImpl;
@@ -47,14 +48,14 @@ public class AddCategoryController extends HttpServlet {
 			List<FileItem> items = servletFileUpload.parseRequest((HttpServletRequest) req);
 			for (FileItem item : items) {
 				if (item.getFieldName().equals("name")) {
-					cate.setName(item.getString("UTF-8"));
+					cate.setName(StringEscapeUtils.escapeHtml4(item.getString("UTF-8")));
 				}
 				if (item.getFieldName().equals("parent_category")) {
-					cate.setcIdBig(Integer.parseInt(item.getString("UTF-8")));
+					cate.setcIdBig(Integer.parseInt(StringEscapeUtils.escapeHtml4(item.getString("UTF-8"))));
 				}
 				if (item.getFieldName().equals("image")) {
 
-					String originalFileName = item.getName();
+					String originalFileName = StringEscapeUtils.escapeHtml4(item.getName());
 					int index = originalFileName.lastIndexOf(".");
 					String ext = originalFileName.substring(index + 1);
 					String fileName = System.currentTimeMillis() + "." + ext;

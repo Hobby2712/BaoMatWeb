@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import DAO.CartDAO;
 import DAO.CategoryDAO;
 import DAO.ProductDAO;
@@ -34,8 +36,8 @@ public class SearchController extends HttpServlet{
 		resp.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");
 		
-        String txtSearch = req.getParameter("txt");
-        String indexS = req.getParameter("index");
+        String txtSearch = StringEscapeUtils.escapeHtml4(req.getParameter("txt"));
+        String indexS = StringEscapeUtils.escapeHtml4(req.getParameter("index"));
         if(indexS == null) {
         	indexS="1";
         }

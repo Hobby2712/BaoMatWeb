@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import DAO.CartDAO;
 import DaoImpl.CartDAOImpl;
 import Entity.Cart;
@@ -26,8 +28,8 @@ public class UpdateCartController extends HttpServlet{
             throws ServletException, IOException {
 		HttpSession session = req.getSession();
 		User u = (User) session.getAttribute("acc");
-		int pid = Integer.parseInt(req.getParameter("pid"));
-		int quantity = Integer.parseInt(req.getParameter("quantity"));
+		int pid = Integer.parseInt(StringEscapeUtils.escapeHtml4(req.getParameter("pid")));
+		int quantity = Integer.parseInt(StringEscapeUtils.escapeHtml4(req.getParameter("quantity")));
 		try {
 			resp.setContentType("text/html");
 			resp.setCharacterEncoding("UTF-8");

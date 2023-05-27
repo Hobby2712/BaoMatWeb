@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import DAO.CategoryDAO;
 import DAO.UserDAO;
 import DaoImpl.CategoryDAOImpl;
@@ -36,7 +38,7 @@ public class FindAccountController extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
 
-		String username_email = request.getParameter("username_email");
+		String username_email = StringEscapeUtils.escapeHtml4(request.getParameter("username_email"));
 		UserDAO dao = new UserDAOImpl();
         User u = dao.checkAccount(username_email);
         if(u != null){

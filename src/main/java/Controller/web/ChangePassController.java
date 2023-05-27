@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import DAO.CartDAO;
 import DAO.CategoryDAO;
 import DAO.UserDAO;
@@ -43,9 +45,9 @@ public class ChangePassController extends HttpServlet {
 		HttpSession session = request.getSession();
 		User u = (User) session.getAttribute("acc");
 
-		String oldpass = request.getParameter("oldPass");
-		String pass = request.getParameter("newPass");
-		String repass = request.getParameter("repeatNewPass");
+		String oldpass = StringEscapeUtils.escapeHtml4(request.getParameter("oldPass"));
+		String pass = StringEscapeUtils.escapeHtml4(request.getParameter("newPass"));
+		String repass = StringEscapeUtils.escapeHtml4(request.getParameter("repeatNewPass"));
 
 		// Category(Header)
 		List<Category> clist = category.getAllCategory1();

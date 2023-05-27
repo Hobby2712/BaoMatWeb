@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import DAO.ProductDAO;
 import DaoImpl.ProductDAOImpl;
 
@@ -24,7 +26,7 @@ public class DeleteProductController extends HttpServlet {
     	response.setContentType("text/html");
     	response.setCharacterEncoding("UTF-8");
     	request.setCharacterEncoding("UTF-8");
-        int pid = Integer.parseInt(request.getParameter("pid"));
+        int pid = Integer.parseInt(StringEscapeUtils.escapeHtml4(request.getParameter("pid")));
         ProductDAO dao = new ProductDAOImpl();
         dao.deleteProduct(pid);
         response.sendRedirect("managerP");
