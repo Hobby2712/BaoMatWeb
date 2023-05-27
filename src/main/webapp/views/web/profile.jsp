@@ -19,8 +19,10 @@
 												src="https://st3.depositphotos.com/1767687/16607/v/450/depositphotos_166074422-stock-illustration-default-avatar-profile-icon-grey.jpg"
 												alt="">
 										</c:if> <c:if test="${sessionScope.acc.image != null}">
-													<img src="<c:url value="/image?fname=${sessionScope.acc.image}"/>" alt="">
-												</c:if>
+											<img
+												src="<c:url value="/image?fname=${sessionScope.acc.image}"/>"
+												alt="">
+										</c:if>
 									</a>
 									<h1>${sessionScope.acc.fullName}</h1>
 									<p>${sessionScope.acc.email}</p>
@@ -77,21 +79,21 @@
 										Name<span></span>
 									</p>
 									<input type="text" value="${sessionScope.acc.fullName}"
-										name="name" required="">
+										name="name" required maxlength="200">
 								</div>
 								<div class="checkout__input">
 									<p style="margin-bottom: 3px">
 										Phone<span></span>
 									</p>
 									<input type="text" value="${sessionScope.acc.phone}"
-										name="phone" required="">
+										name="phone" required maxlength="11">
 								</div>
 								<div class="checkout__input">
 									<p style="margin-bottom: 3px">
 										Address<span></span>
 									</p>
 									<input type="text" value="${sessionScope.acc.address}"
-										name="address" required="">
+										name="address" required maxlength="200">
 								</div>
 								<div class="row justify-content-end" style="padding: 15px">
 									<input type="submit" class="btn btn-success" value="Chỉnh sửa">

@@ -37,7 +37,24 @@ public class ShopController extends HttpServlet{
 		resp.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");
 		
-		int index = Integer.parseInt(req.getParameter("index"));
+		// trước 
+		//int index = Integer.parseInt(req.getParameter("index"));
+		//	sau
+		int maxLength = 200;
+		int index = 1;
+		String strIndex = req.getParameter("index");
+		try {
+			if(strIndex.length()>maxLength) {
+				index = 1;
+			}
+			index = Integer.parseInt(strIndex);
+			
+		}catch(NumberFormatException e){
+			 System.out.println("Error: " + e.getMessage());
+			 index = 1;
+		}
+		
+		
 		
 		//Product
 		List<Product> plist = product.getAllProduct(index);

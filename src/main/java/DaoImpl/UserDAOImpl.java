@@ -1,13 +1,19 @@
 package DaoImpl;
 
+import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -20,7 +26,8 @@ import DAO.UserDAO;
 import Entity.User;
 
 public class UserDAOImpl extends ConnectDB implements UserDAO{
-
+	
+	
 	@Override
 	public User login(String user, String pass) {
 		String query = "select * from [user]\r\n"
@@ -150,7 +157,7 @@ public class UserDAOImpl extends ConnectDB implements UserDAO{
 		int number = rd.nextInt(999999);
 		return String.format("%06d", number);
 	}
-
+	
 	@Override
 	public User checkAccount(String username_email) {
 		String query = "select * from [user]\r\n"

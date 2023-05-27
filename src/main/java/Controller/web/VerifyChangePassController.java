@@ -1,8 +1,12 @@
 package Controller.web;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,7 +18,7 @@ import DAO.UserDAO;
 import DaoImpl.CategoryDAOImpl;
 import DaoImpl.UserDAOImpl;
 import Entity.Category;
-
+import Util.Constant;
 @WebServlet(urlPatterns = { "/verifyChangePass" })
 public class VerifyChangePassController extends HttpServlet {
 
@@ -24,6 +28,7 @@ public class VerifyChangePassController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	UserDAO u = new UserDAOImpl();
 	CategoryDAO category = new CategoryDAOImpl();
+	private static String OTPSend;
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html");
@@ -35,6 +40,12 @@ public class VerifyChangePassController extends HttpServlet {
 		String pass = request.getParameter("pass");
 		String otp = request.getParameter("otp");
 		String otp_send = request.getParameter("otpSend");
+		try {
+			OTPSend = decrypt(otp_send);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		//Category(Header)
 		List<Category> clist = category.getAllCategory1();
@@ -43,7 +54,7 @@ public class VerifyChangePassController extends HttpServlet {
 		request.setAttribute("cList2", clist2);
 		
 		
-		if (!otp.equals(otp_send)) {
+		if (!otp.equals(OTPSend)) {
 			request.setAttribute("mess", "Mã OTP sai!");
 			request.setAttribute("user", user);
 			request.setAttribute("email", email);
@@ -74,5 +85,11 @@ public class VerifyChangePassController extends HttpServlet {
 	public String getServletInfo() {
 		return "Short description";
 	}
-
+	public static String decrypt(String encryptedText) throws Exception {
+	    SecretKeySpec keySpec = new SecretKeySpec(Constant.SECRET_KEY.getBytes(), "AES");
+	    Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+	    cipher.init(Cipher.DECRYPT_MODE, keySpec);
+	    byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(encryptedText));
+	    return new String(decrypted, StandardCharsets.UTF_8);
+	  }
 }

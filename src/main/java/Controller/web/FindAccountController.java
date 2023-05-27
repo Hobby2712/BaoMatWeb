@@ -1,8 +1,13 @@
 package Controller.web;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
 
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,7 +20,7 @@ import DaoImpl.CategoryDAOImpl;
 import DaoImpl.UserDAOImpl;
 import Entity.Category;
 import Entity.User;
-
+import Util.Constant;
 @WebServlet(urlPatterns = { "/findAccount" })
 public class FindAccountController extends HttpServlet {
 
@@ -24,6 +29,7 @@ public class FindAccountController extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 	CategoryDAO category = new CategoryDAOImpl();
+	private static String OTP;
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html");
@@ -36,13 +42,24 @@ public class FindAccountController extends HttpServlet {
         if(u != null){
             //Được đổi pass
         	String otp = dao.getRandom();
+        	try {
+				OTP = encryptOTP(otp);
+			} catch (NoSuchPaddingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.print(otp);
+			System.out.print(OTP);
         	//Category(Header)
     		List<Category> clist = category.getAllCategory1();
     		request.setAttribute("cList", clist);
     		List<Category> clist2 = category.getAllCategory2();
     		request.setAttribute("cList2", clist2);
         	request.setAttribute("user", username_email);
-        	request.setAttribute("otpSend", otp);
+        	request.setAttribute("otpSend", OTP);
         	request.setAttribute("email", u.getEmail());
         	request.setAttribute("action", "verifyForgot");
         	request.setAttribute("cancel", "/Web/loginAccount");
@@ -72,5 +89,12 @@ public class FindAccountController extends HttpServlet {
 	public String getServletInfo() {
 		return "Short description";
 	}
-	
+	public static String encryptOTP(String OTP) throws Exception{
+		
+		SecretKeySpec keySpec = new SecretKeySpec(Constant.SECRET_KEY.getBytes(), "AES");
+	    Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+	    cipher.init(Cipher.ENCRYPT_MODE, keySpec);
+	    byte[] encrypted = cipher.doFinal(OTP.getBytes(StandardCharsets.UTF_8));
+	    return Base64.getEncoder().encodeToString(encrypted);
+	}
 }
