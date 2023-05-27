@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.text.StringEscapeUtils;
 
 import DAO.UserDAO;
 import DaoImpl.UserDAOImpl;
@@ -28,9 +29,9 @@ public class EditProfileController extends HttpServlet {
 		UserDAO dao = new UserDAOImpl();
 		HttpSession session = req.getSession();
 		User u = (User) session.getAttribute("acc");
-		String name = req.getParameter("name");
-		String adress = req.getParameter("adress");
-		String phone = req.getParameter("phone");
+		String name = StringEscapeUtils.escapeHtml4(req.getParameter("name"));
+		String adress = StringEscapeUtils.escapeHtml4(req.getParameter("address"));
+		String phone = StringEscapeUtils.escapeHtml4(req.getParameter("phone"));
 		
 		dao.updateProfile(name, adress, phone, u.getId());
 		session.setAttribute("acc", dao.login(u.getUserName(), u.getPass()));

@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import DAO.CategoryDAO;
 import DAO.UserDAO;
 import DaoImpl.CategoryDAOImpl;
@@ -31,10 +33,10 @@ public class SignUpController extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
 
-		String email = request.getParameter("email");
-		String user = request.getParameter("user");
-		String pass = request.getParameter("pass");
-		String repass = request.getParameter("repass");
+		String email = StringEscapeUtils.escapeHtml4(request.getParameter("email"));
+		String user = StringEscapeUtils.escapeHtml4(request.getParameter("user"));
+		String pass = StringEscapeUtils.escapeHtml4(request.getParameter("pass"));
+		String repass = StringEscapeUtils.escapeHtml4(request.getParameter("repass"));
 
 		// Category(Header)
 		List<Category> clist = category.getAllCategory1();

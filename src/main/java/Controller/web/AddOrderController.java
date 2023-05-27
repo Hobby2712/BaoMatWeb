@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import DAO.CartDAO;
 import DAO.OrderDAO;
 import DaoImpl.CartDAOImpl;
@@ -29,9 +31,9 @@ public class AddOrderController extends HttpServlet {
             throws ServletException, IOException {
 		HttpSession session = req.getSession();
 		User u = (User) session.getAttribute("acc");
-		String name = req.getParameter("name");
-		String phone = req.getParameter("phone");
-		String address = req.getParameter("address");
+		String name = StringEscapeUtils.escapeHtml4(req.getParameter("name"));
+		String phone = StringEscapeUtils.escapeHtml4(req.getParameter("phone"));
+		String address = StringEscapeUtils.escapeHtml4(req.getParameter("address"));
 		try {
 			resp.setContentType("text/html");
 			resp.setCharacterEncoding("UTF-8");

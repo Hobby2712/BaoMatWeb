@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import DAO.UserDAO;
 import DaoImpl.UserDAOImpl;
 import Entity.User;
@@ -28,8 +30,8 @@ public class LoginController extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
 
-		String username = request.getParameter("user");
-		String password = request.getParameter("pass");
+		String username = StringEscapeUtils.escapeHtml4(request.getParameter("user"));
+		String password = StringEscapeUtils.escapeHtml4(request.getParameter("pass"));
 		Boolean remember = Boolean.parseBoolean(request.getParameter("remember"));
 		UserDAO dao = new UserDAOImpl();
 		User u = dao.login(username, password);

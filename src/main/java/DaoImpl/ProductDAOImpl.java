@@ -572,4 +572,172 @@ public class ProductDAOImpl extends ConnectDB implements ProductDAO {
 		}
 		return 0;
 	}
+	
+	@Override
+	public List<Product> getAllProduct() {
+		List<Product> plist = new ArrayList<>();
+		String query = "select * from product";
+		try {
+			Connection conn = super.getConnection();
+			PreparedStatement ps = conn.prepareStatement(query);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Product product = new Product();
+				product.setId(rs.getInt(1));
+				product.setName(rs.getString(2));
+				product.setPrice(rs.getInt(3));
+				product.setImage(rs.getString(4));
+				product.setDescription(rs.getString(5));
+				product.setQuantity(rs.getInt(6));
+				product.setCateId(rs.getInt(7));
+				product.setStoreId(rs.getInt(8));
+				product.setSold(rs.getInt(10));
+				plist.add(product);
+			}
+		} catch (Exception e) {
+		}
+		return plist;
+	}
+	
+	@Override
+	public Product getLastestProduct(String pName) {
+		Product product = new Product();
+		String query = "SELECT TOP 1 * FROM product WHERE pName LIKE ? ORDER BY pId DESC";
+		try {
+			Connection conn = super.getConnection();
+			PreparedStatement ps = conn.prepareStatement(query);
+			ps.setString(1, pName);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				product.setId(rs.getInt(1));
+				product.setName(rs.getString(2));
+				product.setPrice(rs.getInt(3));
+				product.setImage(rs.getString(4));
+				product.setDescription(rs.getString(5));
+				product.setQuantity(rs.getInt(6));
+				product.setCateId(rs.getInt(7));
+				product.setStoreId(rs.getInt(8));
+				product.setSold(rs.getInt(10));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return product;
+	}
+	
+	@Override
+	public boolean editApiProduct(Product p) {
+		// TODO Auto-generated method stub
+		String query = "update product\n"
+                + "set [pName] = ?,\n"
+                + "pPrice = ?,\n"
+                + "[pImage] = ?,\n"
+                + "[pDescription] = ?,\n"
+                + "pQuantity = ?,\n"
+                + "cateId = ?,\n"
+                + "storeId = ?\n"
+                + "where pId = ?";
+				try {
+				Connection con = super.getConnection();
+				PreparedStatement ps = con.prepareStatement(query);
+				ps.setString(1, p.getName());
+				ps.setInt(2, p.getPrice());
+				ps.setString(3, p.getImage());
+				ps.setString(4, p.getDescription());
+				ps.setInt(5, p.getQuantity());
+				ps.setInt(6, p.getCateId());
+				ps.setInt(7, p.getStoreId());
+				ps.setInt(8, p.getId());
+				ps.executeUpdate();
+				return true;
+				} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
+				}
+	}
+	
+	@Override
+	public List<Product> searchByNameAndStore(String txtSearch, String storeId) {
+		List<Product> plist = new ArrayList<>();
+		String query = "select * from product where pName like ? and storeId=?";
+		try {
+			Connection conn = super.getConnection();
+			PreparedStatement ps = conn.prepareStatement(query);
+			ps.setString(1, "%" + txtSearch + "%");
+			ps.setString(2, storeId);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Product product = new Product();
+				product.setId(rs.getInt(1));
+				product.setName(rs.getString(2));
+				product.setPrice(rs.getInt(3));
+				product.setImage(rs.getString(4));
+				product.setDescription(rs.getString(5));
+				product.setQuantity(rs.getInt(6));
+				product.setCateId(rs.getInt(7));
+				product.setStoreId(rs.getInt(8));
+				product.setSold(rs.getInt(10));
+				plist.add(product);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return plist;
+	}
+	
+	@Override
+	public List<Product> getLastestProduct() {
+		List<Product> plist = new ArrayList<>();
+		String query = "SELECT Top 8 * FROM product \r\n" + "order by pId DESC";
+		try {
+			Connection conn = super.getConnection();
+			PreparedStatement ps = conn.prepareStatement(query);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Product product = new Product();
+				product.setId(rs.getInt(1));
+				product.setName(rs.getString(2));
+				product.setPrice(rs.getInt(3));
+				product.setImage(rs.getString(4));
+				product.setDescription(rs.getString(5));
+				product.setQuantity(rs.getInt(6));
+				product.setCateId(rs.getInt(7));
+				product.setStoreId(rs.getInt(8));
+				product.setSold(rs.getInt(10));
+				plist.add(product);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return plist;
+	}
+	
+	@Override
+	public List<Product> getBestSeller() {
+		List<Product> plist = new ArrayList<>();
+		String query = "SELECT Top 8 * FROM product \r\n" + "order by sold DESC";
+		try {
+			Connection conn = super.getConnection();
+			PreparedStatement ps = conn.prepareStatement(query);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Product product = new Product();
+				product.setId(rs.getInt(1));
+				product.setName(rs.getString(2));
+				product.setPrice(rs.getInt(3));
+				product.setImage(rs.getString(4));
+				product.setDescription(rs.getString(5));
+				product.setQuantity(rs.getInt(6));
+				product.setCateId(rs.getInt(7));
+				product.setStoreId(rs.getInt(8));
+				product.setSold(rs.getInt(10));
+				plist.add(product);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return plist;
+	}
 }
