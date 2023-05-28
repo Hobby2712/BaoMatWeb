@@ -13,21 +13,13 @@
 		<welcome-file>default.htm</welcome-file>
 	</welcome-file-list>
 	<filter>
-<<<<<<< HEAD
-    	<filter-name>CSPFilter</filter-name>
-    	<filter-class>Filter.CSPFilter</filter-class>
-	</filter>
-	<filter-mapping>
-    	<filter-name>CSPFilter</filter-name>
-    	<url-pattern>/*</url-pattern>
-=======
 		<filter-name>CSPFilter</filter-name>
 		<filter-class>Filter.CSPFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>CSPFilter</filter-name>
 		<url-pattern>/*</url-pattern>
->>>>>>> cfc536b (Done Session ID in URL Rewrite)
+
 	</filter-mapping>
 	<filter>
 		<filter-name>sitemesh</filter-name>
