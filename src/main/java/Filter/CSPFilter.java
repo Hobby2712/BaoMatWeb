@@ -17,7 +17,6 @@ public class CSPFilter implements Filter {
 	public void init(FilterConfig filterConfig) throws ServletException {
 		// Không cần thiết phải làm gì trong phương thức này
 	}
-
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
