@@ -36,6 +36,7 @@ public class CategoryController extends HttpServlet {
 	CartDAO cart = new CartDAOImpl();
     protected void processRequest(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+    	resp.setHeader("X-Content-Type-Options", "nosniff");
     	resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");

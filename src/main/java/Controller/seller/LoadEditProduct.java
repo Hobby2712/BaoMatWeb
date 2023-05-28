@@ -26,6 +26,7 @@ public class LoadEditProduct extends HttpServlet {
 	CategoryDAO category = new CategoryDAOImpl();
 	protected void processRequest(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+		resp.setHeader("X-Content-Type-Options", "nosniff");
     	resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");

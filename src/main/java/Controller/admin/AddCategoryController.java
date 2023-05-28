@@ -32,12 +32,14 @@ public class AddCategoryController extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setHeader("X-Content-Type-Options", "nosniff");
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/views/admin/CategoryManagement.jsp");
 		dispatcher.forward(req, resp);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setHeader("X-Content-Type-Options", "nosniff");
 		Category cate = new Category();
 		DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
 		ServletFileUpload servletFileUpload = new ServletFileUpload(diskFileItemFactory);

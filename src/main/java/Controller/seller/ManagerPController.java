@@ -34,6 +34,7 @@ public class ManagerPController extends HttpServlet{
 	StoreDAO storeDao = new StoreDAOImpl();
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setHeader("X-Content-Type-Options", "nosniff");
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");

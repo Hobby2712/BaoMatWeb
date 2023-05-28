@@ -24,6 +24,7 @@ public class GetTotalController extends HttpServlet{
 	CartDAO dao = new CartDAOImpl();
 	protected void processRequest(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+		resp.setHeader("X-Content-Type-Options", "nosniff");
 		HttpSession session = req.getSession();
 		User u = (User) session.getAttribute("acc");
 		

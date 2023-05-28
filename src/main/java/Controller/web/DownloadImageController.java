@@ -23,6 +23,7 @@ import Util.Constant;
 public class DownloadImageController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    	resp.setHeader("X-Content-Type-Options", "nosniff");
         String fileName = StringEscapeUtils.escapeHtml4(req.getParameter("fname"));
         Path filePath = Paths.get(Constant.DIR, fileName).normalize();
         

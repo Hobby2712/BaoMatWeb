@@ -27,6 +27,7 @@ public class ProfileController extends HttpServlet {
 	CategoryDAO category = new CategoryDAOImpl();
 	CartDAO cart = new CartDAOImpl();
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setHeader("X-Content-Type-Options", "nosniff");
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");
@@ -50,6 +51,7 @@ public class ProfileController extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setHeader("X-Content-Type-Options", "nosniff");
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");
