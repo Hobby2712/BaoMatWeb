@@ -36,7 +36,7 @@ public class SearchController extends HttpServlet{
 		resp.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");
 		
-        String txtSearch = StringEscapeUtils.escapeHtml4(req.getParameter("txt"));
+        String txtSearch = req.getParameter("txt");
         String indexS = StringEscapeUtils.escapeHtml4(req.getParameter("index"));
         if(indexS == null) {
         	indexS="1";

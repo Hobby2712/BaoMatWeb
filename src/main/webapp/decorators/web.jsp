@@ -56,7 +56,7 @@
 <jsp:include page="/common/web/footer.jsp"></jsp:include>
 <!--=== End Footer v4 ===-->
 <!-- Js Plugins -->
-<script src="<c:url value="/template/js/jquery-3.3.1.min.js" />"></script>
+<script src="<c:url value="/template/js/jquery-3.7.0.min.js" />"></script>
 <script src="<c:url value="/template/js/bootstrap.min.js" />"></script>
 <script src="<c:url value="/template/js/jquery.nice-select.min.js" />"></script>
 <script src="<c:url value="/template/js/jquery-ui.min.js" />"></script>
