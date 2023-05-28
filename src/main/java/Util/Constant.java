@@ -2,13 +2,7 @@ package Util;
 
 public class Constant {
 
-	//public static final String DIR = "D:\\Hoc Tap\\Nam3\\ClothesStore\\Web\\src\\main\\webapp";        
-	public static final String DIR = "D:\\HCMUTE\\BMW\\PROJECT\\BaoMatWeb\\src\\main\\webapp";
-
-	//public static final String DIR = "D:\\cacbaitap\\gitDesktop\\BaoMatWeb\\src\\main\\webapp"; //Danh
-
-
-	//public static final String DIR = "D:\\Hoc Tap\\Nam3\\ClothesStore\\Web\\src\\main\\webapp";        
+	public static final String DIR = "D:\\Hoc Tap\\Nam3\\ClothesStore\\Web\\src\\main\\webapp";        
 	//public static final String DIR = "D:\\HCMUTE\\BMW\\PROJECT\\BaoMatWeb\\src\\main\\webapp";
 	//public static final String DIR = "D:\\cacbaitap\\gitDesktop\\BaoMatWeb\\src\\main\\webapp"; //Danh
 

@@ -28,6 +28,7 @@
 		<filter-name>sitemesh</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+<<<<<<< HEAD
 
 	<listener>
     	<listener-class>Csrf.CsrfTokenSessionListener</listener-class>
@@ -43,6 +44,8 @@
 		<servlet-name>StaticFileServlet</servlet-name>
 		<url-pattern>/template/*</url-pattern>
 	</servlet-mapping>
+=======
+>>>>>>> 7b61894 (Update neee)
 
 	<session-config>
 		<tracking-mode>COOKIE</tracking-mode>
