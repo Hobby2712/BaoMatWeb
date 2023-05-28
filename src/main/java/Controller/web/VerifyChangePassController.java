@@ -51,7 +51,6 @@ public class VerifyChangePassController extends HttpServlet {
 			e.printStackTrace();
 		}
 
-		// Category(Header)
 		List<Category> clist = category.getAllCategory1();
 		request.setAttribute("cList", clist);
 		List<Category> clist2 = category.getAllCategory2();

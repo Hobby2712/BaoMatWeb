@@ -42,6 +42,7 @@ public class ShopController extends HttpServlet{
 		// trước 
 		//int index = Integer.parseInt(StringEscapeUtils.escapeHtml4(req.getParameter("index")));
 		//	sau
+		
 		int maxLength = 200;
 		int index = 1;
 		String strIndex = StringEscapeUtils.escapeHtml4(req.getParameter("index"));
