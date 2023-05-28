@@ -16,6 +16,8 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.text.StringEscapeUtils;
+import org.apache.tika.Tika;
+import org.apache.tika.mime.MediaType;
 
 import DAO.CategoryDAO;
 import DaoImpl.CategoryDAOImpl;
@@ -58,6 +60,12 @@ public class AddCategoryController extends HttpServlet {
 					String originalFileName = StringEscapeUtils.escapeHtml4(item.getName());
 					int index = originalFileName.lastIndexOf(".");
 					String ext = originalFileName.substring(index + 1);
+					Tika tika = new Tika();
+				    MediaType mediaType = MediaType.parse(tika.detect(item.getInputStream()));
+				    if (!mediaType.getType().equals("image") || 
+				        (!mediaType.getSubtype().equals("jpeg") && !mediaType.getSubtype().equals("jpg") && !mediaType.getSubtype().equals("png"))) {
+				        throw new Exception("Only JPEG, JPG, and PNG image files are allowed");
+				    }
 					String fileName = System.currentTimeMillis() + "." + ext;
 					File file = new File(Constant.DIR + "/uploads/category/" + fileName);
 					item.write(file);

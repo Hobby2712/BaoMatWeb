@@ -165,7 +165,7 @@
 				<div id="addEmployeeModal" class="modal fade">
 					<div class="modal-dialog">
 						<div class="modal-content">
-							<form action="add" method="post" enctype="multipart/form-data">
+							<form action="add" method="post" enctype="multipart/form-data" onsubmit="return validateImage()">
 								<div class="modal-header">
 									<h4 class="modal-title">Add Account</h4>
 									<button type="button" class="close" data-dismiss="modal"
@@ -205,7 +205,7 @@
 										</select>
 									</div>
 									<div class="form-group">
-										<label>Image</label> <input type="file" name="image"
+										<label>Image</label> <input type="file" id="image" name="image"
 											class="form-control" required>
 									</div>
 								</div>

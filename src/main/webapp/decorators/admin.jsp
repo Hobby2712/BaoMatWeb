@@ -47,6 +47,18 @@
 <!-- body -->
 
 <!-- Js Plugins -->
+<script type="text/javascript">
+	function validateImage() {
+		var fileInput = document.getElementById('image');
+		var filePath = fileInput.value;
+		var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+		if (!allowedExtensions.exec(filePath)) {
+			alert('Chỉ được chọn định dạng hình ảnh jpg, jpeg, png');
+			fileInput.value = '';
+			return false;
+		}
+	}
+</script>
 <script src="<c:url value="/template/js/jquery-3.3.1.min.js" />"></script>
 <script src="<c:url value="/template/js/bootstrap.min.js" />"></script>
 <script src="<c:url value="/template/js/jquery.nice-select.min.js" />"></script>
