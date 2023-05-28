@@ -99,6 +99,9 @@
                 loadMore();
             }
         }
+        function getCsrfToken() {
+            return '<%=session.getAttribute("csrf_token")%>'
+        }
         function loadMore() {
 			/* tạo viên amount để Gọi và đếm classname là product */
 			var amount = document.getElementsByClassName("featured__item").length;
@@ -118,3 +121,14 @@
 			});
 		};
 	</script>
+<script>
+function addCsrfTokenToForm(event) {
+    event.preventDefault();
+    
+    var csrfTokenInput = document.getElementById('csrfTokenInput');
+    csrfTokenInput.value = getCsrfToken();
+    
+    var form = event.currentTarget.form;
+    form.submit();
+  }
+</script>

@@ -111,7 +111,7 @@
 </div>
 
 <!-- Content End -->
-<script src="<c:url value="/template/js/chart.js" />"></script>
+<script src="<c:url value="/template/js/chart.js" />"></script>3
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 	let info = [];

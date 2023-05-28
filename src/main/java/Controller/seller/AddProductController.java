@@ -27,6 +27,7 @@ import DaoImpl.StoreDAOImpl;
 import Entity.Product;
 import Entity.User;
 import Util.Constant;
+import Util.CsrfTokenUtil;
 
 @WebServlet(urlPatterns = { "/seller/add" })
 public class AddProductController extends HttpServlet {
@@ -57,7 +58,18 @@ public class AddProductController extends HttpServlet {
 			req.setCharacterEncoding("UTF-8");
 			List<FileItem> items = servletFileUpload.parseRequest((HttpServletRequest) req);
 			for (FileItem item : items) {
-				if (item.getFieldName().equals("name")) {
+				if (item.getFieldName().equals("csrf_token")) {
+					System.out.println(item.getString());
+					if (item.getString() == null || !item.getString().equals(req.getSession().getAttribute("csrf_token"))) {
+						resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+						resp.getWriter().write("Invalid CSRF token");
+						//System.out.println(request.getSession().getAttribute("csrf_token"));
+					    return;
+					}
+					//Tạo token mới lên session
+			        String csrfToken = CsrfTokenUtil.generateCsrfToken();
+			        req.getSession().setAttribute("csrf_token", csrfToken);
+				} else if (item.getFieldName().equals("name")) {
 					product.setName(StringEscapeUtils.escapeHtml4(item.getString("UTF-8")));
 				} else if (item.getFieldName().equals("price")) {
 					product.setPrice(Integer.parseInt(StringEscapeUtils.escapeHtml4(item.getString("UTF-8"))));
@@ -72,7 +84,8 @@ public class AddProductController extends HttpServlet {
 				        (!mediaType.getSubtype().equals("jpeg") && !mediaType.getSubtype().equals("jpg") && !mediaType.getSubtype().equals("png"))) {
 				        throw new Exception("Only JPEG, JPG, and PNG image files are allowed");
 				    }
-					String fileName = System.currentTimeMillis() + "." + ext;
+		
+				    String fileName = System.currentTimeMillis() + "." + ext;
 					File file = new File(Constant.DIR + "/uploads/product/" + fileName);
 					item.write(file);
 					product.setImage("/uploads/product/" + fileName);

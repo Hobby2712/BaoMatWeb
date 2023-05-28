@@ -22,6 +22,7 @@
 						<button type="button" class="close" data-dismiss="modal"
 							aria-hidden="true">&times;</button>
 					</div>
+					<input id="csrfTokenInput" name="csrf_token" type="hidden">
 					<div class="modal-body">
 						<div class="form-group">
 							<label>ID</label> <input value="${detail.id}" name="id"
@@ -65,7 +66,7 @@
 					<div class="modal-footer">
 						<input onclick="location.href='managerP';" type="button"
 							class="btn btn-default" style="background-color: #e79393;"
-							value="Cancel"> <input type="submit"
+							value="Cancel"> <input onclick="addCsrfTokenToForm(event)"
 							class="btn btn-success" value="Edit">
 					</div>
 				</form>

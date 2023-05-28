@@ -26,6 +26,7 @@ import DaoImpl.StoreDAOImpl;
 import Entity.Product;
 import Entity.User;
 import Util.Constant;
+import Util.CsrfTokenUtil;
 
 @WebServlet(urlPatterns = { "/seller/edit" })
 public class EditProductController extends HttpServlet {
@@ -50,7 +51,18 @@ public class EditProductController extends HttpServlet {
 			User u = (User) session.getAttribute("acc");
 			List<FileItem> items = servletFileUpload.parseRequest((HttpServletRequest) req);
 			for (FileItem item : items) {
-				if (item.getFieldName().equals("id")) {
+				if (item.getFieldName().equals("csrf_token")) {
+					System.out.println(item.getString());
+					if (item.getString() == null || !item.getString().equals(req.getSession().getAttribute("csrf_token"))) {
+						resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+						resp.getWriter().write("Invalid CSRF token");
+						//System.out.println(request.getSession().getAttribute("csrf_token"));
+					    return;
+					}
+					//Tạo token mới lên session
+			        String csrfToken = CsrfTokenUtil.generateCsrfToken();
+			        req.getSession().setAttribute("csrf_token", csrfToken);
+				} else if (item.getFieldName().equals("id")) {
 					oldP.setId(Integer.parseInt(StringEscapeUtils.escapeHtml4(item.getString("UTF-8"))));
 				} else if (item.getFieldName().equals("name")) {
 					oldP.setName(StringEscapeUtils.escapeHtml4(item.getString("UTF-8")));

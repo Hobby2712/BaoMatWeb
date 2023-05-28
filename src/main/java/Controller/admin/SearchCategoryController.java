@@ -15,6 +15,7 @@ import org.apache.commons.text.StringEscapeUtils;
 import DAO.CategoryDAO;
 import DaoImpl.CategoryDAOImpl;
 import Entity.Category;
+import Util.CsrfTokenUtil;
 
 @WebServlet(urlPatterns = { "/admin/searchC" })
 public class SearchCategoryController extends HttpServlet {
@@ -29,6 +30,19 @@ public class SearchCategoryController extends HttpServlet {
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");
+		
+		String csrfToken = req.getParameter("csrf_token");
+	    System.out.println(csrfToken);
+		if (csrfToken == null || !csrfToken.equals(req.getSession().getAttribute("csrf_token"))) {
+			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			resp.getWriter().write("Invalid CSRF token");
+			//System.out.println(request.getSession().getAttribute("csrf_token"));
+		    return;
+		}
+		
+		//Tạo token mới lên session
+        csrfToken = CsrfTokenUtil.generateCsrfToken();
+        req.getSession().setAttribute("csrf_token", csrfToken);
 
 		String search = StringEscapeUtils.escapeHtml4(req.getParameter("txt").trim());
 		String indexS = StringEscapeUtils.escapeHtml4(req.getParameter("index"));

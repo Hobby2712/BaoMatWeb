@@ -44,8 +44,8 @@
 				</ul>
 			</c:if>
 			<c:if test="${sessionScope.acc == null}">
-				<a href="<c:url value="/loginAccount"/>"><i
-					class="fa fa-user"></i> Login</a>
+				<a href="<c:url value="/loginAccount"/>"><i class="fa fa-user"></i>
+					Login</a>
 			</c:if>
 		</div>
 	</div>
@@ -189,8 +189,9 @@
 				<div class="hero__search">
 					<div class="hero__search__form">
 						<form action="search" method="post">
-							<input name="txt" type="text" placeholder="What do yo u need?">
-							<button type="submit" class="site-btn">SEARCH</button>
+							<input id="csrfTokenInput" name="csrf_token" type="hidden">
+							<input name="txt" type="text" placeholder="What do you need?">
+							<button onclick="addCsrfTokenToForm(event)" class="site-btn">SEARCH</button>
 						</form>
 					</div>
 					<div class="hero__search__phone">

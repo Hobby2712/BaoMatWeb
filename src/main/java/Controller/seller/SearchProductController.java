@@ -22,6 +22,7 @@ import DaoImpl.StoreDAOImpl;
 import Entity.Category;
 import Entity.Product;
 import Entity.User;
+import Util.CsrfTokenUtil;
 
 @WebServlet(urlPatterns = { "/seller/search" })
 public class SearchProductController extends HttpServlet {
@@ -41,6 +42,19 @@ public class SearchProductController extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		HttpSession session = req.getSession();
 		User u = (User) session.getAttribute("acc");
+		
+		String csrfToken = req.getParameter("csrf_token");
+	    System.out.println(csrfToken);
+		if (csrfToken == null || !csrfToken.equals(req.getSession().getAttribute("csrf_token"))) {
+			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			resp.getWriter().write("Invalid CSRF token");
+			//System.out.println(request.getSession().getAttribute("csrf_token"));
+		    return;
+		}
+		
+		//Tạo token mới lên session
+        csrfToken = CsrfTokenUtil.generateCsrfToken();
+        req.getSession().setAttribute("csrf_token", csrfToken);
 
 		String search = StringEscapeUtils.escapeHtml4(req.getParameter("txt").trim());
 		String indexS = StringEscapeUtils.escapeHtml4(req.getParameter("index"));

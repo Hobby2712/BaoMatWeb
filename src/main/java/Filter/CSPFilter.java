@@ -17,7 +17,8 @@ public class CSPFilter implements Filter {
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        httpResponse.setHeader("Content-Security-Policy", "default-src 'self'");
+        //httpResponse.setHeader("Content-Security-Policy", "default-src 'self'");
+        httpResponse.setHeader("Content-Security-Policy", "default-src 'self'; script-src 'unsafe-inline' 'unsafe-eval' *; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'");
         chain.doFilter(request, response);
     }
 

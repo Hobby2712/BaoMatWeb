@@ -57,7 +57,33 @@
 			fileInput.value = '';
 			return false;
 		}
+		return true;
 	}
+	function getCsrfToken() {
+        return '<%=session.getAttribute("csrf_token")%>'
+    }
+</script>
+<script>
+function addCsrfTokenToForm(event) {
+    event.preventDefault();
+    
+    var csrfTokenInput = document.getElementById('csrfTokenInput');
+    csrfTokenInput.value = getCsrfToken();
+    if(validateImage()){
+    	var form = event.currentTarget.form;
+        form.submit();
+    }
+    
+  }
+function addCsrfTokenToFormWithOutImg(event) {
+    event.preventDefault();
+    
+    var csrfTokenInput = document.getElementById('csrfTokenInput');
+    csrfTokenInput.value = getCsrfToken();
+    var form = event.currentTarget.form;
+    form.submit();
+    
+  }
 </script>
 <script src="<c:url value="/template/js/jquery-3.3.1.min.js" />"></script>
 <script src="<c:url value="/template/js/bootstrap.min.js" />"></script>
