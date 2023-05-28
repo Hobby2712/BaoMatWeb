@@ -3,7 +3,6 @@ package Controller.web;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -45,8 +44,5 @@ public class DownloadImageController extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 7b61894 (Update neee)
+
