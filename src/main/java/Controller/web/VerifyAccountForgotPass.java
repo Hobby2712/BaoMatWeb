@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import DAO.CategoryDAO;
 import DaoImpl.CategoryDAOImpl;
 import Entity.Category;
@@ -32,9 +34,9 @@ public class VerifyAccountForgotPass extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
 
-		String username_email = request.getParameter("user");
-		String otp = request.getParameter("otp");
-		String otp_send = request.getParameter("otpSend");
+		String username_email = StringEscapeUtils.escapeHtml4(request.getParameter("user"));
+		String otp = StringEscapeUtils.escapeHtml4(request.getParameter("otp"));
+		String otp_send = StringEscapeUtils.escapeHtml4(request.getParameter("otpSend"));
 		try {
 			OTPSend = decrypt(otp_send);
 		} catch (Exception e) {
@@ -43,6 +45,9 @@ public class VerifyAccountForgotPass extends HttpServlet {
 		}
 		System.out.print(otp_send);
 		System.out.print(OTPSend);
+		
+		
+
 		// Category(Header)
 		List<Category> clist = category.getAllCategory1();
 		request.setAttribute("cList", clist);

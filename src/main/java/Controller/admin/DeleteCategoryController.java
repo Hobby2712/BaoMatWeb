@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import DAO.CategoryDAO;
 import DaoImpl.CategoryDAOImpl;
 
@@ -24,7 +26,7 @@ public class DeleteCategoryController extends HttpServlet {
 		response.setContentType("text/html");
 		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
-		int cid = Integer.parseInt(request.getParameter("cid"));
+		int cid = Integer.parseInt(StringEscapeUtils.escapeHtml4(request.getParameter("cid")));
 		CategoryDAO dao = new CategoryDAOImpl();
 		dao.deleteCate2(cid);
 		response.sendRedirect("ManagerCategory");

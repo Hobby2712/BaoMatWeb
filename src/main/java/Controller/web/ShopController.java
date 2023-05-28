@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import DAO.CartDAO;
 import DAO.CategoryDAO;
 import DAO.ProductDAO;
@@ -38,12 +40,12 @@ public class ShopController extends HttpServlet{
 		req.setCharacterEncoding("UTF-8");
 		
 		// trước 
-		//int index = Integer.parseInt(req.getParameter("index"));
+		//int index = Integer.parseInt(StringEscapeUtils.escapeHtml4(req.getParameter("index")));
 		//	sau
 		
 		int maxLength = 200;
 		int index = 1;
-		String strIndex = req.getParameter("index");
+		String strIndex = StringEscapeUtils.escapeHtml4(req.getParameter("index"));
 		try {
 			if(strIndex.length()>maxLength) {
 				index = 1;

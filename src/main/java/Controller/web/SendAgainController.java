@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import DAO.UserDAO;
 import DaoImpl.UserDAOImpl;
 
@@ -27,7 +29,7 @@ public class SendAgainController extends HttpServlet{
 		request.setCharacterEncoding("UTF-8");
 		
 		UserDAO dao = new UserDAOImpl();
-		String email = request.getParameter("email");
+		String email = StringEscapeUtils.escapeHtml4(request.getParameter("email"));
         
         String otp = dao.getRandom();
     	dao.sendEmail(email, otp);

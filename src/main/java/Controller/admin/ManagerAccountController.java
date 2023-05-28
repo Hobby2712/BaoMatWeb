@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import DAO.UserDAO;
 import DaoImpl.UserDAOImpl;
 import Entity.User;
@@ -30,7 +32,7 @@ public class ManagerAccountController extends HttpServlet {
 		resp.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");
 		
-		String indexS = req.getParameter("index");
+		String indexS = StringEscapeUtils.escapeHtml4(req.getParameter("index"));
 		if(indexS==null) {
 			indexS="1";
 		}

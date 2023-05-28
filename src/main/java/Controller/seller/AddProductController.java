@@ -16,6 +16,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.text.StringEscapeUtils;
 
 import DAO.ProductDAO;
 import DAO.StoreDAO;
@@ -55,12 +56,12 @@ public class AddProductController extends HttpServlet {
 			List<FileItem> items = servletFileUpload.parseRequest((HttpServletRequest) req);
 			for (FileItem item : items) {
 				if (item.getFieldName().equals("name")) {
-					product.setName(item.getString("UTF-8"));
+					product.setName(StringEscapeUtils.escapeHtml4(item.getString("UTF-8")));
 				} else if (item.getFieldName().equals("price")) {
-					product.setPrice(Integer.parseInt(item.getString("UTF-8")));
+					product.setPrice(Integer.parseInt(StringEscapeUtils.escapeHtml4(item.getString("UTF-8"))));
 				} else if (item.getFieldName().equals("image")) {
 
-					String originalFileName = item.getName();
+					String originalFileName = StringEscapeUtils.escapeHtml4(item.getName());
 					int index = originalFileName.lastIndexOf(".");
 					String ext = originalFileName.substring(index + 1);
 					String fileName = System.currentTimeMillis() + "." + ext;
@@ -69,13 +70,13 @@ public class AddProductController extends HttpServlet {
 					product.setImage("/uploads/product/" + fileName);
 				}
 				if (item.getFieldName().equals("description")) {
-					product.setDescription(item.getString("UTF-8"));
+					product.setDescription(StringEscapeUtils.escapeHtml4(item.getString("UTF-8")));
 				}
 				if (item.getFieldName().equals("quantity")) {
-					product.setQuantity(Integer.parseInt(item.getString("UTF-8")));
+					product.setQuantity(Integer.parseInt(StringEscapeUtils.escapeHtml4(item.getString("UTF-8"))));
 				}
 				if (item.getFieldName().equals("category")) {
-					product.setCateId(Integer.parseInt(item.getString("UTF-8")));
+					product.setCateId(Integer.parseInt(StringEscapeUtils.escapeHtml4(item.getString("UTF-8"))));
 				}
 				product.setStoreId(storeDao.GetStoreIdFromUID(u.getId()));
 			}

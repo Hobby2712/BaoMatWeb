@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import DAO.UserDAO;
 import DaoImpl.UserDAOImpl;
 
@@ -26,8 +28,8 @@ public class ChangePassForgotController extends HttpServlet {
     	request.setCharacterEncoding("UTF-8");
 		
     	
-    	String username_email = request.getParameter("username_email");
-		String pass = request.getParameter("pass");
+    	String username_email = StringEscapeUtils.escapeHtml4(request.getParameter("username_email"));
+		String pass = StringEscapeUtils.escapeHtml4(request.getParameter("pass"));
         
 		UserDAO u = new UserDAOImpl();
 		u.changPass(username_email, pass);

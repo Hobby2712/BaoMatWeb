@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import DAO.CartDAO;
 import DAO.CategoryDAO;
 import DAO.ProductDAO;
@@ -38,7 +40,7 @@ public class DetailController extends HttpServlet {
 		resp.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");
 		
-        String id = req.getParameter("pid");
+        String id = StringEscapeUtils.escapeHtml4(req.getParameter("pid"));
         ProductDAO dao = new ProductDAOImpl();
         Product p = dao.getProductByID(id);
         

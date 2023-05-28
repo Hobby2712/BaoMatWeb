@@ -15,6 +15,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.text.StringEscapeUtils;
 
 import DAO.UserDAO;
 import DaoImpl.UserDAOImpl;
@@ -51,14 +52,14 @@ public class AddAccountController extends HttpServlet {
 			List<FileItem> items = servletFileUpload.parseRequest((HttpServletRequest) req);
 			for (FileItem item : items) {
 				if (item.getFieldName().equals("username")) {
-					user.setUserName(item.getString("UTF-8"));
+					user.setUserName(StringEscapeUtils.escapeHtml4(item.getString("UTF-8")));
 				}
 				if (item.getFieldName().equals("fullname")) {
-					user.setFullName((item.getString("UTF-8")));
+					user.setFullName((StringEscapeUtils.escapeHtml4(item.getString("UTF-8"))));
 				}
 				if (item.getFieldName().equals("image")) {
 
-					String originalFileName = item.getName();
+					String originalFileName = StringEscapeUtils.escapeHtml4(item.getName());
 					int index = originalFileName.lastIndexOf(".");
 					String ext = originalFileName.substring(index + 1);
 					String fileName = System.currentTimeMillis() + "." + ext;
@@ -67,19 +68,19 @@ public class AddAccountController extends HttpServlet {
 					user.setImage("/uploads/user/" + fileName);
 				}
 				if (item.getFieldName().equals("email")) {
-					user.setEmail(item.getString("UTF-8"));
+					user.setEmail(StringEscapeUtils.escapeHtml4(item.getString("UTF-8")));
 				}
 				if (item.getFieldName().equals("address")) {
-					user.setAddress((item.getString("UTF-8")));
+					user.setAddress((StringEscapeUtils.escapeHtml4(item.getString("UTF-8"))));
 				}
 				if (item.getFieldName().equals("password")) {
-					user.setPass((item.getString("UTF-8")));
+					user.setPass((StringEscapeUtils.escapeHtml4(item.getString("UTF-8"))));
 				}
 				if (item.getFieldName().equals("phone")) {
-					user.setPhone((item.getString("UTF-8")));
+					user.setPhone((StringEscapeUtils.escapeHtml4(item.getString("UTF-8"))));
 				}
 				if (item.getFieldName().equals("role")) {
-					user.setRole(Integer.parseInt(item.getString("UTF-8")));
+					user.setRole(Integer.parseInt(StringEscapeUtils.escapeHtml4(item.getString("UTF-8"))));
 				}
 
 			}

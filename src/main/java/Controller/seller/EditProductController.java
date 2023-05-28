@@ -15,6 +15,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.text.StringEscapeUtils;
 
 import DAO.ProductDAO;
 import DAO.StoreDAO;
@@ -48,14 +49,14 @@ public class EditProductController extends HttpServlet {
 			List<FileItem> items = servletFileUpload.parseRequest((HttpServletRequest) req);
 			for (FileItem item : items) {
 				if (item.getFieldName().equals("id")) {
-					oldP.setId(Integer.parseInt(item.getString("UTF-8")));
+					oldP.setId(Integer.parseInt(StringEscapeUtils.escapeHtml4(item.getString("UTF-8"))));
 				} else if (item.getFieldName().equals("name")) {
-					oldP.setName(item.getString("UTF-8"));
+					oldP.setName(StringEscapeUtils.escapeHtml4(item.getString("UTF-8")));
 				} else if (item.getFieldName().equals("price")) {
-					oldP.setPrice(Integer.parseInt(item.getString("UTF-8")));
+					oldP.setPrice(Integer.parseInt(StringEscapeUtils.escapeHtml4(item.getString("UTF-8"))));
 				} else if (item.getFieldName().equals("image")) {
 					if (item.getSize() > 0) {// neu co file d
-						String originalFileName = item.getName();
+						String originalFileName = StringEscapeUtils.escapeHtml4(item.getName());
 						int index = originalFileName.lastIndexOf(".");
 						String ext = originalFileName.substring(index + 1);
 						String fileName = System.currentTimeMillis() + "." + ext;
@@ -66,11 +67,11 @@ public class EditProductController extends HttpServlet {
 						oldP.setImage(null);
 					}
 				} else if (item.getFieldName().equals("description")) {
-					oldP.setDescription(item.getString("UTF-8"));
+					oldP.setDescription(StringEscapeUtils.escapeHtml4(item.getString("UTF-8")));
 				} else if (item.getFieldName().equals("quantity")) {
-					oldP.setQuantity(Integer.parseInt(item.getString("UTF-8")));
+					oldP.setQuantity(Integer.parseInt(StringEscapeUtils.escapeHtml4(item.getString("UTF-8"))));
 				} else if (item.getFieldName().equals("category")) {
-					oldP.setCateId(Integer.parseInt(item.getString("UTF-8")));
+					oldP.setCateId(Integer.parseInt(StringEscapeUtils.escapeHtml4(item.getString("UTF-8"))));
 				}
 			}
 			// TODO Auto-generated method stub
