@@ -45,3 +45,4 @@ public class DownloadImageController extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
+}
