@@ -21,6 +21,7 @@ import DaoImpl.CategoryDAOImpl;
 import DaoImpl.UserDAOImpl;
 import Entity.Category;
 import Util.Constant;
+
 @WebServlet(urlPatterns = { "/verifyChangePass" })
 public class VerifyChangePassController extends HttpServlet {
 
@@ -31,47 +32,39 @@ public class VerifyChangePassController extends HttpServlet {
 	UserDAO u = new UserDAOImpl();
 	CategoryDAO category = new CategoryDAOImpl();
 	private static String OTPSend;
+
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html");
 		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
-		
-<<<<<<< HEAD
-		String email = request.getParameter("email");
-		String user = request.getParameter("user");
-		String pass = request.getParameter("pass");
-		String otp = request.getParameter("otp");
-		String otp_send = request.getParameter("otpSend");
+
+		String email = StringEscapeUtils.escapeHtml4(request.getParameter("email"));
+		String user = StringEscapeUtils.escapeHtml4(request.getParameter("user"));
+		String pass = StringEscapeUtils.escapeHtml4(request.getParameter("pass"));
+		String otp = StringEscapeUtils.escapeHtml4(request.getParameter("otp"));
+		String otp_send = StringEscapeUtils.escapeHtml4(request.getParameter("otpSend"));
 		try {
 			OTPSend = decrypt(otp_send);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-=======
-		String email = StringEscapeUtils.escapeHtml4(request.getParameter("email"));
-		String user = StringEscapeUtils.escapeHtml4(request.getParameter("user"));
-		String pass = StringEscapeUtils.escapeHtml4(request.getParameter("pass"));
-		String otp = StringEscapeUtils.escapeHtml4(request.getParameter("otp"));
-		String otp_send = StringEscapeUtils.escapeHtml4(request.getParameter("otpSend"));
->>>>>>> 1f4540f (Done XSS full)
-		
-		//Category(Header)
+
+		// Category(Header)
 		List<Category> clist = category.getAllCategory1();
 		request.setAttribute("cList", clist);
 		List<Category> clist2 = category.getAllCategory2();
 		request.setAttribute("cList2", clist2);
-		
-		
+
 		if (!otp.equals(OTPSend)) {
 			request.setAttribute("mess", "Mã OTP sai!");
 			request.setAttribute("user", user);
 			request.setAttribute("email", email);
 			request.setAttribute("pass", pass);
-        	request.setAttribute("otpSend", otp_send);
-        	request.setAttribute("action", "verifyChangePass");
-        	request.setAttribute("cancel", "/Web/profile");
+			request.setAttribute("otpSend", otp_send);
+			request.setAttribute("action", "verifyChangePass");
+			request.setAttribute("cancel", "/Web/profile");
 			request.getRequestDispatcher("/views/web/otp.jsp").forward(request, response);
 		} else {
 			u.changPass(user, pass);
@@ -95,11 +88,12 @@ public class VerifyChangePassController extends HttpServlet {
 	public String getServletInfo() {
 		return "Short description";
 	}
+
 	public static String decrypt(String encryptedText) throws Exception {
-	    SecretKeySpec keySpec = new SecretKeySpec(Constant.SECRET_KEY.getBytes(), "AES");
-	    Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-	    cipher.init(Cipher.DECRYPT_MODE, keySpec);
-	    byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(encryptedText));
-	    return new String(decrypted, StandardCharsets.UTF_8);
-	  }
+		SecretKeySpec keySpec = new SecretKeySpec(Constant.SECRET_KEY.getBytes(), "AES");
+		Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+		cipher.init(Cipher.DECRYPT_MODE, keySpec);
+		byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(encryptedText));
+		return new String(decrypted, StandardCharsets.UTF_8);
+	}
 }

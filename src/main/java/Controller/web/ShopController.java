@@ -39,13 +39,12 @@ public class ShopController extends HttpServlet{
 		resp.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");
 		
-<<<<<<< HEAD
 		// trước 
-		//int index = Integer.parseInt(req.getParameter("index"));
+		//int index = Integer.parseInt(StringEscapeUtils.escapeHtml4(req.getParameter("index")));
 		//	sau
 		int maxLength = 200;
 		int index = 1;
-		String strIndex = req.getParameter("index");
+		String strIndex = StringEscapeUtils.escapeHtml4(req.getParameter("index"));
 		try {
 			if(strIndex.length()>maxLength) {
 				index = 1;
@@ -58,9 +57,6 @@ public class ShopController extends HttpServlet{
 		}
 		
 		
-=======
-		int index = Integer.parseInt(StringEscapeUtils.escapeHtml4(req.getParameter("index")));
->>>>>>> 1f4540f (Done XSS full)
 		
 		//Product
 		List<Product> plist = product.getAllProduct(index);
