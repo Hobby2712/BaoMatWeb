@@ -16,7 +16,7 @@
 	<div id="editEmployeeModal">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form action="edit" method="post" enctype="multipart/form-data">
+				<form action="edit" method="post" enctype="multipart/form-data" onsubmit="return validateImage()">
 					<div class="modal-header">
 						<h4 class="modal-title">Edit Product</h4>
 						<button type="button" class="close" data-dismiss="modal"
@@ -38,7 +38,7 @@
 						<div class="form-group">
 							<label>Image</label><br> <img src="/Web${detail.image}"
 								width="100" height="120" alt=""> <input type="file"
-								name="image" class="form-control">
+								id="image" name="image" class="form-control">
 						</div>
 						<div class="form-group">
 							<label>Description</label>

@@ -95,7 +95,7 @@
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<form action="addcategory" method="post"
-								enctype="multipart/form-data">
+								enctype="multipart/form-data" onsubmit="return validateImage()">
 								<div class="modal-header">
 									<h4 class="modal-title">Add Category</h4>
 									<button type="button" class="close" data-dismiss="modal"
@@ -116,7 +116,7 @@
 										</select>
 									</div>
 									<div class="form-group">
-										<label>Image</label> <input type="file" name="image"
+										<label>Image</label> <input type="file" id="image" name="image"
 											class="form-control" required>
 									</div>
 								</div>
