@@ -37,6 +37,7 @@ public class SearchProductController extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setHeader("X-Content-Type-Options", "nosniff");
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");
@@ -56,7 +57,7 @@ public class SearchProductController extends HttpServlet {
         csrfToken = CsrfTokenUtil.generateCsrfToken();
         req.getSession().setAttribute("csrf_token", csrfToken);
 
-		String search = StringEscapeUtils.escapeHtml4(req.getParameter("txt").trim());
+		String search = req.getParameter("txt").trim();
 		String indexS = StringEscapeUtils.escapeHtml4(req.getParameter("index"));
 		if (indexS == null) {
 			indexS = "1";

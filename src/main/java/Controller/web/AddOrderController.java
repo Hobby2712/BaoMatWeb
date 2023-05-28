@@ -29,6 +29,7 @@ public class AddOrderController extends HttpServlet {
 	CartDAO cdao = new CartDAOImpl();
 	protected void processRequest(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+		resp.setHeader("X-Content-Type-Options", "nosniff");
 		HttpSession session = req.getSession();
 		User u = (User) session.getAttribute("acc");
 		String name = StringEscapeUtils.escapeHtml4(req.getParameter("name"));
