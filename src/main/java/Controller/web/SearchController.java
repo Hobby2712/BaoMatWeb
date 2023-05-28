@@ -1,6 +1,8 @@
 package Controller.web;
 
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.http.HttpRequest;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -21,6 +23,7 @@ import DaoImpl.ProductDAOImpl;
 import Entity.Category;
 import Entity.Product;
 import Entity.User;
+import Util.CsrfTokenUtil;
 
 @WebServlet(urlPatterns = {"/search"})
 public class SearchController extends HttpServlet{
@@ -36,6 +39,15 @@ public class SearchController extends HttpServlet{
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");
+		// Lấy token từ request header
+	    String csrfToken = req.getParameter("csrf_token");
+	    System.out.println(csrfToken);
+		if (csrfToken == null || !csrfToken.equals(req.getSession().getAttribute("csrf_token"))) {
+			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			resp.getWriter().write("Invalid CSRF token");
+			System.out.println(req.getSession().getAttribute("csrf_token"));
+		    return;
+		}
 		
         String txtSearch = req.getParameter("txt");
         String indexS = StringEscapeUtils.escapeHtml4(req.getParameter("index"));
@@ -46,6 +58,9 @@ public class SearchController extends HttpServlet{
         
         ProductDAO dao1 = new ProductDAOImpl();
         CategoryDAO dao2 = new CategoryDAOImpl();
+        //Tạo token mới lên session
+        csrfToken = CsrfTokenUtil.generateCsrfToken();
+        req.getSession().setAttribute("csrf_token", csrfToken);
         
         List<Category> listC = dao2.getAllCategory1();
         List<Category> clist2 = dao2.getAllCategory2();

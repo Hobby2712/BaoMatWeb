@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebFilter("/*")
 public class CSPFilter implements Filter {
 
+
 	public void init(FilterConfig filterConfig) throws ServletException {
 		// Không cần thiết phải làm gì trong phương thức này
 	}
