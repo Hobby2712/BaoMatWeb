@@ -16,7 +16,7 @@ public class StaticFile extends HttpServlet {
 
         // Kiểm tra đường dẫn của tệp tin và thiết lập tiêu đề X-Content-Type-Options nếu là file Bootstrap
         if (pathInfo != null && pathInfo.startsWith("/template/")) {
-            response.setHeader("X-Content-Type-Options", "nosniff");
+            //response.setHeader("X-Content-Type-Options", "nosniff");
         }
         // Phục vụ tệp tin tĩnh
         // ...
