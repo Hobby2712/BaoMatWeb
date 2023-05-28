@@ -46,7 +46,8 @@ public class VerifyChangePassController extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		System.out.print(otp_send);
+		System.out.print(OTPSend);
 		//Category(Header)
 		List<Category> clist = category.getAllCategory1();
 		request.setAttribute("cList", clist);

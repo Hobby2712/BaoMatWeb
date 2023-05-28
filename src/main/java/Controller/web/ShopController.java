@@ -40,6 +40,7 @@ public class ShopController extends HttpServlet{
 		// trước 
 		//int index = Integer.parseInt(req.getParameter("index"));
 		//	sau
+		
 		int maxLength = 200;
 		int index = 1;
 		String strIndex = req.getParameter("index");
