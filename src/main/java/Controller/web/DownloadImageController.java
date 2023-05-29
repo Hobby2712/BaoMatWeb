@@ -42,7 +42,6 @@ public class DownloadImageController extends HttpServlet {
         IOUtils.copy(new FileInputStream(file), resp.getOutputStream());
     }
 
-
     private boolean isValidFilePath(File file) {
         // Kiểm tra xem tệp có nằm trong thư mục tải lên hợp lệ không
         String absolutePath = file.getAbsolutePath();
@@ -50,3 +49,4 @@ public class DownloadImageController extends HttpServlet {
         return absolutePath.startsWith(uploadsDirectoryPath);
     }
 }
+

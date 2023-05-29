@@ -2,8 +2,11 @@ package Controller.web;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
@@ -23,16 +26,16 @@ import DaoImpl.UserDAOImpl;
 import Entity.Category;
 import Entity.User;
 import Util.Constant;
+
 @WebServlet(urlPatterns = { "/signup" })
 public class SignUpController extends HttpServlet {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	CategoryDAO category = new CategoryDAOImpl();
-	
-	private static String OTP;
+	private static final int MIN_PASSWORD_LENGTH = 12;
+	private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{12,}$");
+
+	private CategoryDAO category = new CategoryDAOImpl();
+
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setHeader("X-Content-Type-Options", "nosniff");
@@ -54,40 +57,27 @@ public class SignUpController extends HttpServlet {
 		if (!pass.equals(repass)) {
 			request.setAttribute("mess", "Mật khẩu không khớp");
 			request.getRequestDispatcher("/signUpAccount").forward(request, response);
+		} else if (!isStrongPassword(pass)) {
+			request.setAttribute("mess", "Mật khẩu không đáp ứng yêu cầu bảo mật");
+			request.getRequestDispatcher("/signUpAccount").forward(request, response);
 		} else {
 			UserDAO dao = new UserDAOImpl();
 			User u = dao.checkAccountExist(user);
 			if (dao.checkEmailExist(email) != null) {
-				// day ve trang signup.jsp
 				request.setAttribute("mess", "Email đã được sử dụng");
 				request.getRequestDispatcher("/signUpAccount").forward(request, response);
 			} else if (u == null) {
-				// dc signup
-				String otp = dao.getRandom();
-				
 				try {
-					OTP = encryptOTP(otp);
-				} catch (NoSuchPaddingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("user", user);
+					request.setAttribute("pass", pass);
+					request.setAttribute("email", email);
+					request.setAttribute("action", "verify");
+					request.setAttribute("cancel", "/Web/loginAccount");
+					request.getRequestDispatcher("/views/web/otp.jsp").forward(request, response);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				System.out.print(otp);
-				System.out.print(OTP);
-				request.setAttribute("user", user);
-				request.setAttribute("pass", pass);
-				request.setAttribute("email", email);
-				request.setAttribute("otpSend", OTP);
-				request.setAttribute("action", "verify");
-				request.setAttribute("cancel", "/Web/loginAccount");
-				dao.sendEmail(email, otp);
-				request.getRequestDispatcher("/views/web/otp.jsp").forward(request, response);
-			}
-
-			else {
-				// day ve trang signup.jsp
+			} else {
 				request.setAttribute("mess", "Tài khoản đã tồn tại");
 				request.getRequestDispatcher("/signUpAccount").forward(request, response);
 			}
@@ -110,13 +100,8 @@ public class SignUpController extends HttpServlet {
 	public String getServletInfo() {
 		return "Short description";
 	}
-	public static String encryptOTP(String OTP) throws Exception{
-		
-		SecretKeySpec keySpec = new SecretKeySpec(Constant.SECRET_KEY.getBytes(), "AES");
-	    Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-	    cipher.init(Cipher.ENCRYPT_MODE, keySpec);
-	    byte[] encrypted = cipher.doFinal(OTP.getBytes(StandardCharsets.UTF_8));
-	    return Base64.getEncoder().encodeToString(encrypted);
+
+	private boolean isStrongPassword(String password) {
+		return password.length() >= MIN_PASSWORD_LENGTH && PASSWORD_PATTERN.matcher(password).matches();
 	}
-	
 }
