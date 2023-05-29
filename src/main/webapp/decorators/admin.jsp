@@ -77,7 +77,7 @@ if(validateImage()){
 function addCsrfTokenToFormWithOutImg(event) {
     event.preventDefault();
     
-    var csrfTokenInput = document.getElementById('csrfTokenInput');
+    var csrfTokenInput = document.getElementById('csrfTokenInputNoImg');
     csrfTokenInput.value = getCsrfToken();
     var form = event.currentTarget.form;
     form.submit();
