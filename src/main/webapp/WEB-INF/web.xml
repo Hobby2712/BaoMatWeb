@@ -28,22 +28,9 @@
 		<filter-name>sitemesh</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
 	<listener>
     	<listener-class>Csrf.CsrfTokenSessionListener</listener-class>
 	</listener>
-	
-
-	<servlet>
-		<servlet-name>StaticFileServlet</servlet-name>
-		<servlet-class>Filter.StaticFile</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>StaticFileServlet</servlet-name>
-		<url-pattern>/template/*</url-pattern>
-	</servlet-mapping>
-
 	<session-config>
 		<tracking-mode>COOKIE</tracking-mode>
 	</session-config>

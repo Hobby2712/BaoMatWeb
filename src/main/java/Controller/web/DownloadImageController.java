@@ -3,9 +3,6 @@ package Controller.web;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,28 +18,35 @@ import Util.Constant;
 @SuppressWarnings("serial")
 @WebServlet(urlPatterns = "/image") // ?fname=abc.png
 public class DownloadImageController extends HttpServlet {
+    private static final String UPLOADS_DIRECTORY = "/uploads";
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-    	resp.setHeader("X-Content-Type-Options", "nosniff");
-
-        String fileName = StringEscapeUtils.escapeHtml4(req.getParameter("fname"));
-        Path filePath = Paths.get(Constant.DIR, fileName).normalize();
-        
-        File file = filePath.toFile();
-        String canonicalPath = file.getCanonicalPath();
-        
-        if (!filePath.startsWith(Paths.get(Constant.DIR).toAbsolutePath()) || canonicalPath.endsWith("WEB-INF" + File.separator + "web.xml")) {
-            // Đường dẫn tệp không nằm trong thư mục hợp lệ hoặc là tệp WEB-INF/web.xml
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        String fileName = req.getParameter("fname");
+        if (fileName == null) {
             return;
         }
-        
-        if (file.exists() && file.isFile()) {
-            resp.setContentType("image/jpeg");
-            IOUtils.copy(new FileInputStream(file), resp.getOutputStream());
-        } else {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+        // Giới hạn ký tự đặc biệt và xử lý escape
+        fileName = StringEscapeUtils.escapeHtml4(fileName);
+      
+
+        File file = new File(Constant.DIR, fileName);
+
+        // Kiểm tra xem tệp có nằm trong thư mục tải lên hợp lệ không
+        if (!isValidFilePath(file)) {
+            return;
         }
+
+        resp.setContentType("image/jpeg");
+        IOUtils.copy(new FileInputStream(file), resp.getOutputStream());
+    }
+
+
+    private boolean isValidFilePath(File file) {
+        // Kiểm tra xem tệp có nằm trong thư mục tải lên hợp lệ không
+        String absolutePath = file.getAbsolutePath();
+        String uploadsDirectoryPath = new File(Constant.DIR, UPLOADS_DIRECTORY).getAbsolutePath();
+        return absolutePath.startsWith(uploadsDirectoryPath);
     }
 }
