@@ -22,6 +22,7 @@ import DaoImpl.UserDAOImpl;
 import Entity.Category;
 import Util.Constant;
 import Util.CsrfTokenUtil;
+import Util.PasswordEncoder;
 
 @WebServlet(urlPatterns = { "/verifyChangePass" })
 public class VerifyChangePassController extends HttpServlet {
@@ -33,6 +34,7 @@ public class VerifyChangePassController extends HttpServlet {
 	UserDAO u = new UserDAOImpl();
 	CategoryDAO category = new CategoryDAOImpl();
 	private static String OTPSend;
+	private static String pass;
 
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -55,11 +57,12 @@ public class VerifyChangePassController extends HttpServlet {
 
 		String email = StringEscapeUtils.escapeHtml4(request.getParameter("email"));
 		String user = StringEscapeUtils.escapeHtml4(request.getParameter("user"));
-		String pass = StringEscapeUtils.escapeHtml4(request.getParameter("pass"));
+		String passEncoder = StringEscapeUtils.escapeHtml4(request.getParameter("pass"));
 		String otp = StringEscapeUtils.escapeHtml4(request.getParameter("otp"));
 		String otp_send = StringEscapeUtils.escapeHtml4(request.getParameter("otpSend"));
 		try {
 			OTPSend = decrypt(otp_send);
+			pass = PasswordEncoder.decrypt(passEncoder);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

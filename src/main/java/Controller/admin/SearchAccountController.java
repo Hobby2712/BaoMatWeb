@@ -88,6 +88,7 @@ public class SearchAccountController extends HttpServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setHeader("X-Content-Type-Options", "nosniff");
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");

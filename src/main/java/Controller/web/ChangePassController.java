@@ -27,6 +27,8 @@ import Entity.Category;
 import Entity.User;
 import Util.Constant;
 import Util.CsrfTokenUtil;
+import Util.PasswordEncoder;
+
 @WebServlet(urlPatterns = { "/changePassword" })
 public class ChangePassController extends HttpServlet {
 
@@ -37,6 +39,7 @@ public class ChangePassController extends HttpServlet {
 	CategoryDAO category = new CategoryDAOImpl();
 	CartDAO cart = new CartDAOImpl();
 	private static String OTP;
+	private static String passwordEncoder;
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setHeader("X-Content-Type-Options", "nosniff");
@@ -84,6 +87,7 @@ public class ChangePassController extends HttpServlet {
 			
         	try {
 				OTP = encryptOTP(otp);
+				passwordEncoder = PasswordEncoder.encrypt(pass);
 			} catch (NoSuchPaddingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -94,7 +98,7 @@ public class ChangePassController extends HttpServlet {
 			System.out.print(otp);
 			System.out.print(OTP);
 			request.setAttribute("user", u.getUserName());
-			request.setAttribute("pass", pass);
+			request.setAttribute("pass", passwordEncoder);
 			request.setAttribute("email", u.getEmail());
 			request.setAttribute("otpSend", OTP);
 			request.setAttribute("action", "verifyChangePass");

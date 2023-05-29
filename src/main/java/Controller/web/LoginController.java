@@ -16,7 +16,7 @@ import DAO.UserDAO;
 import DaoImpl.UserDAOImpl;
 import Entity.User;
 import Util.CsrfTokenUtil;
-
+import Util.PasswordEncoder;
 @WebServlet(urlPatterns = { "/login" })
 public class LoginController extends HttpServlet {
 
@@ -24,9 +24,11 @@ public class LoginController extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	private static String sameSite = "SameSite=Strict";
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", request.getSession().getId(), sameSite);
+		response.setHeader("Set-Cookie", cookieHeader);
 		response.setHeader("X-Content-Type-Options", "nosniff");
 		response.setContentType("text/html");
 		response.setCharacterEncoding("UTF-8");
@@ -40,12 +42,14 @@ public class LoginController extends HttpServlet {
 		    return;
 		}
 		
+		
 		//Tạo token mới lên session
         csrfToken = CsrfTokenUtil.generateCsrfToken();
         request.getSession().setAttribute("csrf_token", csrfToken);
 
 		String username = StringEscapeUtils.escapeHtml4(request.getParameter("user"));
 		String password = StringEscapeUtils.escapeHtml4(request.getParameter("pass"));
+		//String passwordEncrypt = PasswordEncoder.encrypt(password);
 		Boolean remember = Boolean.parseBoolean(request.getParameter("remember"));
 		UserDAO dao = new UserDAOImpl();
 		User u = dao.login(username, password);
@@ -54,13 +58,29 @@ public class LoginController extends HttpServlet {
 			request.getRequestDispatcher("/loginAccount").forward(request, response);
 		} else {
 			HttpSession session = request.getSession();
+			
+			
 			session.setAttribute("acc", u);
 			session.setMaxInactiveInterval(1000);
 			if (remember == true) {
-				Cookie uNameCookie = new Cookie("username", username);
+				String sanitizedUsername = username.replaceAll("[\r\n]", "");
+				Cookie uNameCookie = new Cookie("username", sanitizedUsername);
+				String uNamecookieHeader = String.format("%s=%s; %s", uNameCookie, username, sameSite); 
+				response.setHeader("Set-Cookie", uNamecookieHeader);
+				
 				uNameCookie.setMaxAge(24 * 3600);
-				Cookie passCookie = new Cookie("pass", password);
+				uNameCookie.setHttpOnly(true);
+				uNameCookie.setSecure(true);
+				String sanitizedPassword = username.replaceAll("[\r\n]", "");
+				Cookie passCookie = new Cookie("pass", sanitizedPassword);
+				
+				String uPasscookieHeader = String.format("%s=%s; %s", passCookie, password, sameSite); 
+				response.setHeader("Set-Cookie", uPasscookieHeader);
+				
 				passCookie.setMaxAge(24 * 3600);
+				passCookie.setHttpOnly(true);
+				passCookie.setSecure(true);
+				//uNameCookie.setSameSite("Strict");
 				response.addCookie(uNameCookie);
 				response.addCookie(passCookie);
 			}

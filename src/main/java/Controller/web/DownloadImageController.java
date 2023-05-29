@@ -18,10 +18,14 @@ import Util.Constant;
 @SuppressWarnings("serial")
 @WebServlet(urlPatterns = "/image") // ?fname=abc.png
 public class DownloadImageController extends HttpServlet {
+	
     private static final String UPLOADS_DIRECTORY = "/uploads";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+    	resp.setHeader("X-Content-Type-Options", "nosniff");
+
         String fileName = req.getParameter("fname");
         if (fileName == null) {
             return;

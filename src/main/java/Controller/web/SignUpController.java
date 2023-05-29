@@ -28,14 +28,23 @@ import Entity.User;
 import Util.Constant;
 import Util.CsrfTokenUtil;
 
+import Util.PasswordEncoder;
+
 @WebServlet(urlPatterns = { "/signup" })
 public class SignUpController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+
+	
+	
+	private static String OTP;
+	private static String passEncoder;
+
 	private static final int MIN_PASSWORD_LENGTH = 12;
 	private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{12,}$");
 
 	private CategoryDAO category = new CategoryDAOImpl();
+
 
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -57,10 +66,12 @@ public class SignUpController extends HttpServlet {
         request.getSession().setAttribute("csrf_token", csrfToken);
 
 		String email = StringEscapeUtils.escapeHtml4(request.getParameter("email"));
-		String user = StringEscapeUtils.escapeHtml4(request.getParameter("user"));
+		String user = StringEscapeUtils.escapeHtml4(request.getParameter("user"));		
 		String pass = StringEscapeUtils.escapeHtml4(request.getParameter("pass"));
 		String repass = StringEscapeUtils.escapeHtml4(request.getParameter("repass"));
 
+		
+		
 		// Category(Header)
 		List<Category> clist = category.getAllCategory1();
 		request.setAttribute("cList", clist);
@@ -80,17 +91,24 @@ public class SignUpController extends HttpServlet {
 				request.setAttribute("mess", "Email đã được sử dụng");
 				request.getRequestDispatcher("/signUpAccount").forward(request, response);
 			} else if (u == null) {
+				// dc signup
+				String otp = dao.getRandom();				
 				try {
-					request.setAttribute("user", user);
-					request.setAttribute("pass", pass);
-					request.setAttribute("email", email);
-					request.setAttribute("action", "verify");
-					request.setAttribute("cancel", "/Web/loginAccount");
-					request.getRequestDispatcher("/views/web/otp.jsp").forward(request, response);
+					OTP = PasswordEncoder.encrypt(otp);
+					passEncoder = PasswordEncoder.encrypt(pass);
 				} catch (Exception e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			} else {
+				request.setAttribute("user", user);
+				request.setAttribute("pass", passEncoder);
+				request.setAttribute("email", email);
+				request.setAttribute("otpSend", OTP);
+				request.setAttribute("action", "verify");
+				request.setAttribute("cancel", "/Web/loginAccount");
+				dao.sendEmail(email, otp);
+				request.getRequestDispatcher("/views/web/otp.jsp").forward(request, response);
+				}else {
 				request.setAttribute("mess", "Tài khoản đã tồn tại");
 				request.getRequestDispatcher("/signUpAccount").forward(request, response);
 			}
