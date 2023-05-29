@@ -30,6 +30,7 @@ public class HomeController extends HttpServlet {
 	ProductDAO product = new ProductDAOImpl();
 	CategoryDAO category = new CategoryDAOImpl();
 	CartDAO cart = new CartDAOImpl();
+	String sameSite = "SameSite=Strict";
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -57,6 +58,9 @@ public class HomeController extends HttpServlet {
 		req.setAttribute("cList2", clist2);
 
 		HttpSession session = req.getSession();
+		String cookieHeader = String.format("JSESSIONID=%s; %s", session.getId(), sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
+		
 		User u = (User) session.getAttribute("acc");
 
 		if (u != null) {

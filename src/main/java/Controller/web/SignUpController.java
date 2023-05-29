@@ -34,7 +34,7 @@ public class SignUpController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	CategoryDAO category = new CategoryDAOImpl();
+	
 	
 	private static String OTP;
 	private static String passEncoder;
@@ -81,21 +81,10 @@ public class SignUpController extends HttpServlet {
 				// dc signup
 				String otp = dao.getRandom();				
 				try {
-					OTP = encryptOTP(otp);
+					OTP = PasswordEncoder.encrypt(otp);
 					passEncoder = PasswordEncoder.encrypt(pass);
-				} catch (NoSuchPaddingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-
-				try {
-					request.setAttribute("user", user);
-					request.setAttribute("pass", pass);
-					request.setAttribute("email", email);
-					request.setAttribute("action", "verify");
-					request.setAttribute("cancel", "/Web/loginAccount");
-					request.getRequestDispatcher("/views/web/otp.jsp").forward(request, response);
-
 				} catch (Exception e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				request.setAttribute("user", user);
@@ -106,12 +95,7 @@ public class SignUpController extends HttpServlet {
 				request.setAttribute("cancel", "/Web/loginAccount");
 				dao.sendEmail(email, otp);
 				request.getRequestDispatcher("/views/web/otp.jsp").forward(request, response);
-			}
-
-			else {
-				// day ve trang signup.jsp
-
-			} else {
+				}else {
 				request.setAttribute("mess", "Tài khoản đã tồn tại");
 				request.getRequestDispatcher("/signUpAccount").forward(request, response);
 			}

@@ -54,9 +54,7 @@ public class VerifyAccountSignUpController extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.print(pass);
-		System.out.print(passEncoder);
-
+		
 		// Category(Header)
 		List<Category> clist = category.getAllCategory1();
 		request.setAttribute("cList", clist);
