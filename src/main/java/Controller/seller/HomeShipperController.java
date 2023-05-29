@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import DAO.OrderDAO;
 import DaoImpl.OrderDAOImpl;
 import Entity.OrderDetails;
+import Util.Constant;
 
 @WebServlet(urlPatterns = { "/shipper/homeShipper" })
 public class HomeShipperController extends HttpServlet{
@@ -22,6 +23,8 @@ public class HomeShipperController extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	OrderDAO order = new OrderDAOImpl();
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", req.getSession().getId(), Constant.sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
 		resp.setHeader("X-Content-Type-Options", "nosniff");
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");

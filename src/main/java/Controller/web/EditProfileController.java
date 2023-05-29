@@ -13,6 +13,7 @@ import org.apache.commons.text.StringEscapeUtils;
 import DAO.UserDAO;
 import DaoImpl.UserDAOImpl;
 import Entity.User;
+import Util.Constant;
 import Util.CsrfTokenUtil;
 
 @WebServlet(urlPatterns = { "/editProfile" })
@@ -23,6 +24,8 @@ public class EditProfileController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	protected void processRequest(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", req.getSession().getId(), Constant.sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
 		resp.setHeader("X-Content-Type-Options", "nosniff");
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");

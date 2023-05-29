@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import DAO.CategoryDAO;
 import DaoImpl.CategoryDAOImpl;
 import Entity.Category;
-
+import Util.Constant;
 @WebServlet(urlPatterns = { "/loginAccount" })
 public class LoginAccountController extends HttpServlet {
 	/**
@@ -23,6 +23,8 @@ public class LoginAccountController extends HttpServlet {
 	CategoryDAO category = new CategoryDAOImpl();
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", req.getSession().getId(), Constant.sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
 		resp.setHeader("X-Content-Type-Options", "nosniff");
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
@@ -39,6 +41,8 @@ public class LoginAccountController extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", req.getSession().getId(), Constant.sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
 		req.setCharacterEncoding("UTF-8");

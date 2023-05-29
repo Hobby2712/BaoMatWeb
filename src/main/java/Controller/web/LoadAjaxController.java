@@ -15,6 +15,7 @@ import DAO.ProductDAO;
 import DaoImpl.CategoryDAOImpl;
 import DaoImpl.ProductDAOImpl;
 import Entity.Product;
+import Util.Constant;
 
 @WebServlet(urlPatterns = { "/ajax/load" })
 public class LoadAjaxController extends HttpServlet {
@@ -28,6 +29,8 @@ public class LoadAjaxController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", request.getSession().getId(), Constant.sameSite);
+		response.setHeader("Set-Cookie", cookieHeader);
 		response.setHeader("X-Content-Type-Options", "nosniff");
 		response.setContentType("text/html");
 		response.setCharacterEncoding("UTF-8");

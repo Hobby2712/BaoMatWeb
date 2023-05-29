@@ -16,6 +16,7 @@ import DAO.CartDAO;
 import DaoImpl.CartDAOImpl;
 import Entity.Cart;
 import Entity.User;
+import Util.Constant;
 
 @WebServlet(urlPatterns = { "/addCartDetail" })
 public class AddCartDetailController extends HttpServlet {
@@ -27,6 +28,8 @@ public class AddCartDetailController extends HttpServlet {
 
 	protected void processRequest(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", req.getSession().getId(), Constant.sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
 		resp.setHeader("X-Content-Type-Options", "nosniff");
 		HttpSession session = req.getSession();
 		User u = (User) session.getAttribute("acc");

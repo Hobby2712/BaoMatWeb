@@ -17,6 +17,7 @@ import DaoImpl.OrderDAOImpl;
 import DaoImpl.StoreDAOImpl;
 import Entity.OrderDetails;
 import Entity.User;
+import Util.Constant;
 
 @WebServlet(urlPatterns = {"/seller/order"})
 public class OrderSellerController extends HttpServlet{
@@ -28,6 +29,8 @@ public class OrderSellerController extends HttpServlet{
 	StoreDAO storeDao = new StoreDAOImpl();
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", req.getSession().getId(), Constant.sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
 		resp.setHeader("X-Content-Type-Options", "nosniff");
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");

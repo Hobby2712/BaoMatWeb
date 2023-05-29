@@ -19,6 +19,7 @@ import DaoImpl.CategoryDAOImpl;
 import DaoImpl.ProductDAOImpl;
 import DaoImpl.StoreDAOImpl;
 import Entity.Product;
+import Util.Constant;
 
 @WebServlet(urlPatterns = {"/admin/ManagerProduct"})
 public class ManagerProductController extends HttpServlet{
@@ -33,6 +34,8 @@ public class ManagerProductController extends HttpServlet{
 	StoreDAO storeDao = new StoreDAOImpl();
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", req.getSession().getId(), Constant.sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
 		resp.setHeader("X-Content-Type-Options", "nosniff");
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");

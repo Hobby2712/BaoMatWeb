@@ -20,6 +20,7 @@ import DaoImpl.ProductDAOImpl;
 import Entity.Category;
 import Entity.Product;
 import Entity.User;
+import Util.Constant;
 
 @WebServlet(urlPatterns = { "/home" })
 public class HomeController extends HttpServlet {
@@ -34,6 +35,8 @@ public class HomeController extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", req.getSession().getId(), Constant.sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
 		resp.setHeader("X-Content-Type-Options", "nosniff");
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
@@ -58,8 +61,7 @@ public class HomeController extends HttpServlet {
 		req.setAttribute("cList2", clist2);
 
 		HttpSession session = req.getSession();
-		String cookieHeader = String.format("JSESSIONID=%s; %s", session.getId(), sameSite);
-		resp.setHeader("Set-Cookie", cookieHeader);
+		
 		
 		User u = (User) session.getAttribute("acc");
 

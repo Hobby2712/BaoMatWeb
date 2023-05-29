@@ -17,6 +17,7 @@ import DaoImpl.CartDAOImpl;
 import DaoImpl.CategoryDAOImpl;
 import Entity.Category;
 import Entity.User;
+import Util.Constant;
 
 @WebServlet(urlPatterns = { "/contact" })
 public class ContactController extends HttpServlet {
@@ -28,6 +29,8 @@ public class ContactController extends HttpServlet {
 	CartDAO cart = new CartDAOImpl();
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", req.getSession().getId(), Constant.sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
 		resp.setHeader("X-Content-Type-Options", "nosniff");
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");

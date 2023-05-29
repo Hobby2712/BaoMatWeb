@@ -33,6 +33,8 @@ public class AddCategoryController extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", req.getSession().getId(), Constant.sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
 		resp.setHeader("X-Content-Type-Options", "nosniff");
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/views/admin/CategoryManagement.jsp");
 		dispatcher.forward(req, resp);
@@ -40,6 +42,8 @@ public class AddCategoryController extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", req.getSession().getId(), Constant.sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
 		resp.setHeader("X-Content-Type-Options", "nosniff");
 		Category cate = new Category();
 		DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();

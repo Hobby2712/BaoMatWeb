@@ -15,6 +15,7 @@ import DaoImpl.CategoryDAOImpl;
 import DaoImpl.ProductDAOImpl;
 import Entity.Category;
 import Entity.Product;
+import Util.Constant;
 
 @WebServlet(urlPatterns = {"/seller/loadEdit"})
 public class LoadEditProduct extends HttpServlet {
@@ -26,6 +27,8 @@ public class LoadEditProduct extends HttpServlet {
 	CategoryDAO category = new CategoryDAOImpl();
 	protected void processRequest(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", req.getSession().getId(), Constant.sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
 		resp.setHeader("X-Content-Type-Options", "nosniff");
     	resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");

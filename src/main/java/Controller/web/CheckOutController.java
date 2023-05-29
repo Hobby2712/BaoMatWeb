@@ -19,6 +19,7 @@ import Entity.Cart;
 import Entity.Category;
 import Entity.Product;
 import Entity.User;
+import Util.Constant;
 
 @WebServlet(urlPatterns = { "/checkout" })
 public class CheckOutController extends HttpServlet {
@@ -32,6 +33,8 @@ public class CheckOutController extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", req.getSession().getId(), Constant.sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
 		resp.setHeader("X-Content-Type-Options", "nosniff");
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");

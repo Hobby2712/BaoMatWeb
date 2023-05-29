@@ -19,6 +19,7 @@ import DaoImpl.CategoryDAOImpl;
 import DaoImpl.ProductDAOImpl;
 import DaoImpl.StoreDAOImpl;
 import Entity.Product;
+import Util.Constant;
 import Util.CsrfTokenUtil;
 
 @WebServlet(urlPatterns = { "/admin/searchP" })
@@ -34,6 +35,8 @@ public class SearchProductController extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", req.getSession().getId(), Constant.sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
 		resp.setHeader("X-Content-Type-Options", "nosniff");
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
@@ -98,6 +101,8 @@ public class SearchProductController extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", req.getSession().getId(), Constant.sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
 		resp.setHeader("X-Content-Type-Options", "nosniff");
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");

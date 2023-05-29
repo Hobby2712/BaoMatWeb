@@ -22,6 +22,7 @@ import DaoImpl.ProductDAOImpl;
 import Entity.Category;
 import Entity.Product;
 import Entity.User;
+import Util.Constant;
 
 @WebServlet(urlPatterns = {"/shop"})
 public class ShopController extends HttpServlet{
@@ -35,6 +36,8 @@ public class ShopController extends HttpServlet{
 	CartDAO cart = new CartDAOImpl();
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", req.getSession().getId(), Constant.sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
 		resp.setHeader("X-Content-Type-Options", "nosniff");
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");

@@ -12,6 +12,7 @@ import org.apache.commons.text.StringEscapeUtils;
 
 import DAO.ProductDAO;
 import DaoImpl.ProductDAOImpl;
+import Util.Constant;
 
 @WebServlet(urlPatterns = {"/admin/del"})
 public class DeleteProductController extends HttpServlet {
@@ -23,6 +24,8 @@ public class DeleteProductController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	String cookieHeader = String.format("JSESSIONID=%s; %s", request.getSession().getId(), Constant.sameSite);
+		response.setHeader("Set-Cookie", cookieHeader);
     	response.setHeader("X-Content-Type-Options", "nosniff");
     	response.setContentType("text/html");
     	response.setCharacterEncoding("UTF-8");

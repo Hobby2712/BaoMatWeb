@@ -15,6 +15,7 @@ import org.apache.commons.text.StringEscapeUtils;
 import DAO.UserDAO;
 import DaoImpl.UserDAOImpl;
 import Entity.User;
+import Util.Constant;
 import Util.CsrfTokenUtil;
 
 @WebServlet(urlPatterns = { "/admin/search" })
@@ -27,6 +28,8 @@ public class SearchAccountController extends HttpServlet {
 	UserDAO user = new UserDAOImpl();
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", req.getSession().getId(), Constant.sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
 		resp.setHeader("X-Content-Type-Options", "nosniff");
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
@@ -88,6 +91,8 @@ public class SearchAccountController extends HttpServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", req.getSession().getId(), Constant.sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
 		resp.setHeader("X-Content-Type-Options", "nosniff");
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");

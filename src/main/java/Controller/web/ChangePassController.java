@@ -42,6 +42,8 @@ public class ChangePassController extends HttpServlet {
 	private static String passwordEncoder;
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", request.getSession().getId(), Constant.sameSite);
+		response.setHeader("Set-Cookie", cookieHeader);
 		response.setHeader("X-Content-Type-Options", "nosniff");
 		response.setContentType("text/html");
 		response.setCharacterEncoding("UTF-8");

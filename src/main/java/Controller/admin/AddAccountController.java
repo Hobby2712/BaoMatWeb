@@ -37,6 +37,8 @@ public class AddAccountController extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", req.getSession().getId(), Constant.sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
 		 resp.setHeader("X-Content-Type-Options", "nosniff");
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/views/admin/AccountManagement.jsp");
 		dispatcher.forward(req, resp);

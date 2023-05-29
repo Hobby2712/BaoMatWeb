@@ -15,6 +15,7 @@ import org.apache.commons.text.StringEscapeUtils;
 import DAO.CategoryDAO;
 import DaoImpl.CategoryDAOImpl;
 import Entity.Category;
+import Util.Constant;
 
 @WebServlet(urlPatterns = { "/admin/ManagerCategory" })
 public class ManagerCategoryController extends HttpServlet {
@@ -27,6 +28,8 @@ public class ManagerCategoryController extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", req.getSession().getId(), Constant.sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
 		resp.setHeader("X-Content-Type-Options", "nosniff");
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");

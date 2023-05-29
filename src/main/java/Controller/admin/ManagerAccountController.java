@@ -15,6 +15,7 @@ import org.apache.commons.text.StringEscapeUtils;
 import DAO.UserDAO;
 import DaoImpl.UserDAOImpl;
 import Entity.User;
+import Util.Constant;
 
 @WebServlet(urlPatterns = { "/admin/ManagerAccount" })
 public class ManagerAccountController extends HttpServlet {
@@ -28,6 +29,8 @@ public class ManagerAccountController extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", req.getSession().getId(), Constant.sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
 		resp.setHeader("X-Content-Type-Options", "nosniff");
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");

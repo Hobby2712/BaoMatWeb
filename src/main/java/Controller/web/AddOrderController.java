@@ -18,6 +18,7 @@ import DaoImpl.CartDAOImpl;
 import DaoImpl.OrderDAOImpl;
 import Entity.Cart;
 import Entity.User;
+import Util.Constant;
 import Util.CsrfTokenUtil;
 
 @WebServlet(urlPatterns = { "/addOrder" })
@@ -30,6 +31,8 @@ public class AddOrderController extends HttpServlet {
 	CartDAO cdao = new CartDAOImpl();
 	protected void processRequest(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", req.getSession().getId(), Constant.sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
 		resp.setHeader("X-Content-Type-Options", "nosniff");
 		HttpSession session = req.getSession();
 		User u = (User) session.getAttribute("acc");

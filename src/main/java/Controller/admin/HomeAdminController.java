@@ -14,6 +14,7 @@ import DAO.ThongKeDAO;
 import DaoImpl.ThongKeDAOImpl;
 import Entity.Chart;
 import Entity.ThongKe;
+import Util.Constant;
 
 @WebServlet(urlPatterns = { "/admin/homeAdmin" })
 public class HomeAdminController extends HttpServlet {
@@ -24,6 +25,8 @@ public class HomeAdminController extends HttpServlet {
 	ThongKeDAO thongke = new ThongKeDAOImpl();
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String cookieHeader = String.format("JSESSIONID=%s; %s", req.getSession().getId(), Constant.sameSite);
+		resp.setHeader("Set-Cookie", cookieHeader);
 		resp.setHeader("X-Content-Type-Options", "nosniff");
 		resp.setContentType("text/html");
 		resp.setCharacterEncoding("UTF-8");
