@@ -21,6 +21,7 @@ import DaoImpl.CategoryDAOImpl;
 import DaoImpl.UserDAOImpl;
 import Entity.Category;
 import Util.Constant;
+import Util.CsrfTokenUtil;
 import Util.PasswordEncoder;
 
 @WebServlet(urlPatterns = { "/verifyChangePass" })
@@ -41,6 +42,18 @@ public class VerifyChangePassController extends HttpServlet {
 		response.setContentType("text/html");
 		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
+		
+		String csrfToken = request.getParameter("csrf_token");
+	    System.out.println(csrfToken);
+		if (csrfToken == null || !csrfToken.equals(request.getSession().getAttribute("csrf_token"))) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().write("Invalid CSRF token");
+			System.out.println(request.getSession().getAttribute("csrf_token"));
+		    return;
+		}
+		//Tạo token mới lên session
+        csrfToken = CsrfTokenUtil.generateCsrfToken();
+        request.getSession().setAttribute("csrf_token", csrfToken);
 
 		String email = StringEscapeUtils.escapeHtml4(request.getParameter("email"));
 		String user = StringEscapeUtils.escapeHtml4(request.getParameter("user"));

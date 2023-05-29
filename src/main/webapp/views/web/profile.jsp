@@ -72,8 +72,9 @@
 									</div>
 								</div>
 							</form>
-							<form class="form_profile" action="/Web/editProfile">
+							<form class="form_profile" action="/Web/editProfile" method="post">
 								<div class="bio-graph-heading">Chỉnh sửa hồ sơ</div>
+								<input name="csrf_token" type="hidden" value="<%=session.getAttribute("csrf_token")%>">
 								<div class="checkout__input">
 									<p style="margin-bottom: 3px">
 										Name<span></span>
@@ -96,11 +97,12 @@
 										name="address" required maxlength="200">
 								</div>
 								<div class="row justify-content-end" style="padding: 15px">
-									<input type="submit" class="btn btn-success" value="Chỉnh sửa">
+									<input onclick="addCsrfTokenToForm(event)" class="btn btn-success" value="Chỉnh sửa">
 								</div>
 							</form>
-							<form class="form_profile" action="/Web/changePassword">
+							<form class="form_profile" action="/Web/changePassword" method="post">
 								<div class="bio-graph-heading">Đổi mật khẩu</div>
+								<input name="csrf_token" type="hidden" value="<%=session.getAttribute("csrf_token")%>">
 								<div class="checkout__input">
 									<p style="margin-bottom: 3px">
 										Old PassWord<span>*</span>
@@ -120,7 +122,7 @@
 									<input name="repeatNewPass" type="password" required="">
 								</div>
 								<div class="row justify-content-end" style="padding: 15px">
-									<input type="submit" class="btn btn-success" value="Thay đổi">
+									<input onclick="addCsrfTokenToForm(event)" class="btn btn-success" value="Thay đổi">
 								</div>
 							</form>
 						</div>

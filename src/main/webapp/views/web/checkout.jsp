@@ -26,9 +26,10 @@
 		<div class="container">
 			<div class="checkout__form">
 				<h4>Billing Details</h4>
-				<form action="addOrder">
+				<form action="addOrder" method="post">
 					<div class="row">
 						<div class="col-lg-8 col-md-6">
+							<input name="csrf_token" type="hidden" value="<%=session.getAttribute("csrf_token")%>">
 							<div class="checkout__input">
 								<p>
 									Name<span>*</span>
@@ -69,7 +70,7 @@
 									<label for="payment"> Thanh toán khi nhận hàng
 									</label>
 								</div>
-								<button type="submit" class="site-btn">PLACE ORDER</button>
+								<button onclick="addCsrfTokenToForm(event)" class="site-btn">PLACE ORDER</button>
 							</div>
 						</div>
 					</div>
