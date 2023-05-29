@@ -23,7 +23,7 @@ import DaoImpl.UserDAOImpl;
 import Entity.Category;
 import Entity.User;
 import Util.Constant;
-
+import Util.PasswordEncoder;
 @WebServlet(urlPatterns = { "/verify" })
 public class VerifyAccountSignUpController extends HttpServlet {
 
@@ -33,6 +33,7 @@ public class VerifyAccountSignUpController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	CategoryDAO category = new CategoryDAOImpl();
 	private static String OTPSend;
+	private static String pass;
 
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -43,17 +44,18 @@ public class VerifyAccountSignUpController extends HttpServlet {
 
 		String email = StringEscapeUtils.escapeHtml4(request.getParameter("email"));
 		String user = StringEscapeUtils.escapeHtml4(request.getParameter("user"));
-		String pass = StringEscapeUtils.escapeHtml4(request.getParameter("pass"));
+		String passEncoder = StringEscapeUtils.escapeHtml4(request.getParameter("pass"));
 		String otp = StringEscapeUtils.escapeHtml4(request.getParameter("otp"));
 		String otp_send = StringEscapeUtils.escapeHtml4(request.getParameter("otpSend"));
 		try {
 			OTPSend = decrypt(otp_send);
+			pass = PasswordEncoder.decrypt(passEncoder);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.print(otp_send);
-		System.out.print(OTPSend);
+		System.out.print(pass);
+		System.out.print(passEncoder);
 
 		// Category(Header)
 		List<Category> clist = category.getAllCategory1();

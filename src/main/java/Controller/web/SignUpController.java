@@ -23,6 +23,7 @@ import DaoImpl.UserDAOImpl;
 import Entity.Category;
 import Entity.User;
 import Util.Constant;
+import Util.PasswordEncoder;
 @WebServlet(urlPatterns = { "/signup" })
 public class SignUpController extends HttpServlet {
 
@@ -33,6 +34,7 @@ public class SignUpController extends HttpServlet {
 	CategoryDAO category = new CategoryDAOImpl();
 	
 	private static String OTP;
+	private static String passEncoder;
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setHeader("X-Content-Type-Options", "nosniff");
@@ -41,10 +43,12 @@ public class SignUpController extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 
 		String email = StringEscapeUtils.escapeHtml4(request.getParameter("email"));
-		String user = StringEscapeUtils.escapeHtml4(request.getParameter("user"));
+		String user = StringEscapeUtils.escapeHtml4(request.getParameter("user"));		
 		String pass = StringEscapeUtils.escapeHtml4(request.getParameter("pass"));
 		String repass = StringEscapeUtils.escapeHtml4(request.getParameter("repass"));
 
+		
+		
 		// Category(Header)
 		List<Category> clist = category.getAllCategory1();
 		request.setAttribute("cList", clist);
@@ -63,10 +67,10 @@ public class SignUpController extends HttpServlet {
 				request.getRequestDispatcher("/signUpAccount").forward(request, response);
 			} else if (u == null) {
 				// dc signup
-				String otp = dao.getRandom();
-				
+				String otp = dao.getRandom();				
 				try {
 					OTP = encryptOTP(otp);
+					passEncoder = PasswordEncoder.encrypt(pass);
 				} catch (NoSuchPaddingException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -74,10 +78,8 @@ public class SignUpController extends HttpServlet {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				System.out.print(otp);
-				System.out.print(OTP);
 				request.setAttribute("user", user);
-				request.setAttribute("pass", pass);
+				request.setAttribute("pass", passEncoder);
 				request.setAttribute("email", email);
 				request.setAttribute("otpSend", OTP);
 				request.setAttribute("action", "verify");

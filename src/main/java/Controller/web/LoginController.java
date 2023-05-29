@@ -16,7 +16,7 @@ import DAO.UserDAO;
 import DaoImpl.UserDAOImpl;
 import Entity.User;
 import Util.CsrfTokenUtil;
-
+import Util.PasswordEncoder;
 @WebServlet(urlPatterns = { "/login" })
 public class LoginController extends HttpServlet {
 
@@ -46,6 +46,7 @@ public class LoginController extends HttpServlet {
 
 		String username = StringEscapeUtils.escapeHtml4(request.getParameter("user"));
 		String password = StringEscapeUtils.escapeHtml4(request.getParameter("pass"));
+		//String passwordEncrypt = PasswordEncoder.encrypt(password);
 		Boolean remember = Boolean.parseBoolean(request.getParameter("remember"));
 		UserDAO dao = new UserDAOImpl();
 		User u = dao.login(username, password);
