@@ -23,6 +23,7 @@ import DAO.UserDAO;
 import DaoImpl.UserDAOImpl;
 import Entity.User;
 import Util.Constant;
+import Util.CsrfTokenUtil;
 
 @WebServlet(urlPatterns = { "/admin/add" })
 public class AddAccountController extends HttpServlet {
@@ -55,7 +56,18 @@ public class AddAccountController extends HttpServlet {
 
 			List<FileItem> items = servletFileUpload.parseRequest((HttpServletRequest) req);
 			for (FileItem item : items) {
-				if (item.getFieldName().equals("username")) {
+				if (item.getFieldName().equals("csrf_token")) {
+					System.out.println(item.getString());
+					if (item.getString() == null || !item.getString().equals(req.getSession().getAttribute("csrf_token"))) {
+						resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+						resp.getWriter().write("Invalid CSRF token");
+						//System.out.println(request.getSession().getAttribute("csrf_token"));
+					    return;
+					}
+					//Tạo token mới lên session
+			        String csrfToken = CsrfTokenUtil.generateCsrfToken();
+			        req.getSession().setAttribute("csrf_token", csrfToken);
+				} else if (item.getFieldName().equals("username")) {
 					user.setUserName(StringEscapeUtils.escapeHtml4(item.getString("UTF-8")));
 				}
 				if (item.getFieldName().equals("fullname")) {
