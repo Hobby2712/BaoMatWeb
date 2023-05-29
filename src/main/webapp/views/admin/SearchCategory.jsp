@@ -23,8 +23,9 @@
 				<div class="hero__search">
 					<div class="hero__search__form">
 						<form action="searchC" method="post">
+							<input id="csrfTokenInput" name="csrf_token" type="hidden">
 							<input name="txt" type="text" placeholder="Search for name">
-							<button type="submit" class="site-btn">SEARCH</button>
+							<button onclick="addCsrfTokenToFormWithOutImg(event)" class="site-btn">SEARCH</button>
 						</form>
 					</div>
 				</div>
@@ -102,6 +103,7 @@
 										aria-hidden="true">&times;</button>
 								</div>
 								<div class="modal-body">
+									<input id="csrfTokenInput" name="csrf_token" type="hidden">
 									<div class="form-group">
 										<label>Name</label> <input name="name" type="text"
 											class="form-control" required>
@@ -123,7 +125,7 @@
 								<div class="modal-footer">
 									<input type="button" class="btn btn-default"
 										data-dismiss="modal" style="background-color: #e79393;"
-										value="Cancel"> <input type="submit"
+										value="Cancel"> <input onclick="addCsrfTokenToForm(event)"
 										class="btn btn-success" value="Add">
 								</div>
 							</form>

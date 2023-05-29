@@ -11,6 +11,7 @@
             <p>Mã OTP đã được gửi đến ${email}</br>
                 Vui lòng nhậP mã OTP gồm 6 chữ số.
             </p>
+            <input name="csrf_token" type="hidden" value="<%=session.getAttribute("csrf_token")%>">
             <input name="user" type="hidden" value="${user}">
             <input name="pass" type="hidden" value="${pass}">
             <input name="email" id="email" type="hidden" value="${email}">
@@ -25,7 +26,7 @@
                 <div class="col-lg-6 float-right">
                     <input onclick="location.href='${cancel}';" type="button" class="btn btn-default"
                         style="background-color: #e79393; margin-left: 15px;" value="Cancel">
-                    <input type="submit" class="btn btn-success" value="Continue">
+                    <input onclick="addCsrfTokenToForm(event)" class="btn btn-success" value="Continue">
                 </div>
             </div>
         </form>

@@ -12,6 +12,7 @@ import org.apache.commons.text.StringEscapeUtils;
 
 import DAO.UserDAO;
 import DaoImpl.UserDAOImpl;
+import Util.CsrfTokenUtil;
 
 @WebServlet(urlPatterns = { "/changePassForgot" })
 public class ChangePassForgotController extends HttpServlet {
@@ -27,7 +28,17 @@ public class ChangePassForgotController extends HttpServlet {
     	response.setContentType("text/html");
     	response.setCharacterEncoding("UTF-8");
     	request.setCharacterEncoding("UTF-8");
-		
+    	String csrfToken = request.getParameter("csrf_token");
+	    System.out.println(csrfToken);
+		if (csrfToken == null || !csrfToken.equals(request.getSession().getAttribute("csrf_token"))) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.getWriter().write("Invalid CSRF token");
+			System.out.println(request.getSession().getAttribute("csrf_token"));
+		    return;
+		}
+		//Tạo token mới lên session
+        csrfToken = CsrfTokenUtil.generateCsrfToken();
+        request.getSession().setAttribute("csrf_token", csrfToken);
     	
     	String username_email = StringEscapeUtils.escapeHtml4(request.getParameter("username_email"));
 		String pass = StringEscapeUtils.escapeHtml4(request.getParameter("pass"));

@@ -18,6 +18,7 @@ import DaoImpl.CartDAOImpl;
 import DaoImpl.OrderDAOImpl;
 import Entity.Cart;
 import Entity.User;
+import Util.CsrfTokenUtil;
 
 @WebServlet(urlPatterns = { "/addOrder" })
 public class AddOrderController extends HttpServlet {
@@ -32,6 +33,17 @@ public class AddOrderController extends HttpServlet {
 		resp.setHeader("X-Content-Type-Options", "nosniff");
 		HttpSession session = req.getSession();
 		User u = (User) session.getAttribute("acc");
+		String csrfToken = req.getParameter("csrf_token");
+	    System.out.println(csrfToken);
+		if (csrfToken == null || !csrfToken.equals(req.getSession().getAttribute("csrf_token"))) {
+			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			resp.getWriter().write("Invalid CSRF token");
+			System.out.println(req.getSession().getAttribute("csrf_token"));
+		    return;
+		}
+		//Tạo token mới lên session
+        csrfToken = CsrfTokenUtil.generateCsrfToken();
+        req.getSession().setAttribute("csrf_token", csrfToken);
 		String name = StringEscapeUtils.escapeHtml4(req.getParameter("name"));
 		String phone = StringEscapeUtils.escapeHtml4(req.getParameter("phone"));
 		String address = StringEscapeUtils.escapeHtml4(req.getParameter("address"));

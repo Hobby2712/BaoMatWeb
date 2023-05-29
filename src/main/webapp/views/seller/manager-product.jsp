@@ -28,6 +28,7 @@
 				<div class="hero__search">
 					<div class="hero__search__form">
 						<form action="search" method="post">
+							<input id="csrfTokenInput" name="csrf_token" type="hidden">
 							<input name="txt" type="text" placeholder="What do yo u need?">
 							<button onclick="addCsrfTokenToFormWithOutImg(event)" class="site-btn">SEARCH</button>
 						</form>

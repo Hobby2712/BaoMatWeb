@@ -13,6 +13,7 @@ import org.apache.commons.text.StringEscapeUtils;
 import DAO.UserDAO;
 import DaoImpl.UserDAOImpl;
 import Entity.User;
+import Util.CsrfTokenUtil;
 
 @WebServlet(urlPatterns = { "/editProfile" })
 public class EditProfileController extends HttpServlet {
@@ -29,6 +30,19 @@ public class EditProfileController extends HttpServlet {
 		
 		UserDAO dao = new UserDAOImpl();
 		HttpSession session = req.getSession();
+		// Lấy token từ request header
+	    String csrfToken = req.getParameter("csrf_token");
+	    System.out.println(csrfToken);
+		if (csrfToken == null || !csrfToken.equals(req.getSession().getAttribute("csrf_token"))) {
+			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			resp.getWriter().write("Invalid CSRF token");
+			System.out.println(req.getSession().getAttribute("csrf_token"));
+		    return;
+		}
+		//Tạo token mới lên session
+        csrfToken = CsrfTokenUtil.generateCsrfToken();
+        session.setAttribute("csrf_token", csrfToken);
+        
 		User u = (User) session.getAttribute("acc");
 		String name = StringEscapeUtils.escapeHtml4(req.getParameter("name"));
 		String adress = StringEscapeUtils.escapeHtml4(req.getParameter("address"));

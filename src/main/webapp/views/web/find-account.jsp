@@ -10,6 +10,7 @@
             <p style="margin-bottom: 3px">
                 Nhập Email hoặc Username để tìm tài khoản
             </p>
+            <input id="csrfTokenInput" name="csrf_token" type="hidden">
             <input name="user" type="hidden">
             <input name="pass" type="hidden">
             <input name="email" type="hidden">
@@ -20,7 +21,7 @@
             <div class="float-right" style="margin-top:5px;">
                 <input onclick="location.href='/Web/loginAccount';" type="button" class="btn btn-default"
                     style="background-color: #e79393; margin-left: 15px;" value="Cancel">
-                <input type="submit" class="btn btn-success" value="Continue">
+                <input onclick="addCsrfTokenToForm(event)" class="btn btn-success" value="Continue">
             </div>
         </br></br>
         </form>
