@@ -23,7 +23,9 @@ public class DownloadImageController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
     	resp.setHeader("X-Content-Type-Options", "nosniff");
+
         String fileName = req.getParameter("fname");
         if (fileName == null) {
             return;
