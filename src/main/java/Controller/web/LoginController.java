@@ -58,10 +58,17 @@ public class LoginController extends HttpServlet {
 			session.setAttribute("acc", u);
 			session.setMaxInactiveInterval(1000);
 			if (remember == true) {
-				Cookie uNameCookie = new Cookie("username", username);
+				String sanitizedUsername = username.replaceAll("[\r\n]", "");
+				Cookie uNameCookie = new Cookie("username", sanitizedUsername);
 				uNameCookie.setMaxAge(24 * 3600);
-				Cookie passCookie = new Cookie("pass", password);
+				uNameCookie.setHttpOnly(true);
+				uNameCookie.setSecure(true);
+				String sanitizedPassword = username.replaceAll("[\r\n]", "");
+				Cookie passCookie = new Cookie("pass", sanitizedPassword);
 				passCookie.setMaxAge(24 * 3600);
+				passCookie.setHttpOnly(true);
+				passCookie.setSecure(true);
+				
 				response.addCookie(uNameCookie);
 				response.addCookie(passCookie);
 			}
