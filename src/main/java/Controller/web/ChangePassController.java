@@ -25,9 +25,10 @@ import DaoImpl.CategoryDAOImpl;
 import DaoImpl.UserDAOImpl;
 import Entity.Category;
 import Entity.User;
+import Util.AES;
 import Util.Constant;
 import Util.CsrfTokenUtil;
-import Util.PasswordEncoder;
+import Util.KeyGenerator2;
 
 @WebServlet(urlPatterns = { "/changePassword" })
 public class ChangePassController extends HttpServlet {
@@ -84,12 +85,12 @@ public class ChangePassController extends HttpServlet {
 			request.getRequestDispatcher("/profile").forward(request, response);
 		} else {
 			UserDAO dao = new UserDAOImpl();
-			// dc signup
+			
 			String otp = dao.getRandom();
 			
         	try {
-				OTP = encryptOTP(otp);
-				passwordEncoder = PasswordEncoder.encrypt(pass);
+				OTP = AES.encrypt(otp, KeyGenerator2.getSecretKey());
+				passwordEncoder = AES.encrypt(pass, KeyGenerator2.getSecretKey());
 			} catch (NoSuchPaddingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -125,13 +126,5 @@ public class ChangePassController extends HttpServlet {
 	@Override
 	public String getServletInfo() {
 		return "Short description";
-	}
-public static String encryptOTP(String OTP) throws Exception{
-		
-		SecretKeySpec keySpec = new SecretKeySpec(Constant.SECRET_KEY.getBytes(), "AES");
-	    Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-	    cipher.init(Cipher.ENCRYPT_MODE, keySpec);
-	    byte[] encrypted = cipher.doFinal(OTP.getBytes(StandardCharsets.UTF_8));
-	    return Base64.getEncoder().encodeToString(encrypted);
 	}
 }

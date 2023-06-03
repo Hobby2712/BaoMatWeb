@@ -18,8 +18,10 @@ import org.apache.commons.text.StringEscapeUtils;
 import DAO.CategoryDAO;
 import DaoImpl.CategoryDAOImpl;
 import Entity.Category;
+import Util.AES;
 import Util.Constant;
 import Util.CsrfTokenUtil;
+import Util.KeyGenerator2;
 @WebServlet(urlPatterns = { "/verifyForgot" })
 public class VerifyAccountForgotPass extends HttpServlet {
 
@@ -39,11 +41,11 @@ public class VerifyAccountForgotPass extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		
 		String csrfToken = request.getParameter("csrf_token");
-	    System.out.println(csrfToken);
+	    //System.out.println(csrfToken);
 		if (csrfToken == null || !csrfToken.equals(request.getSession().getAttribute("csrf_token"))) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().write("Invalid CSRF token");
-			System.out.println(request.getSession().getAttribute("csrf_token"));
+			//System.out.println(request.getSession().getAttribute("csrf_token"));
 		    return;
 		}
 		//Tạo token mới lên session
@@ -54,18 +56,12 @@ public class VerifyAccountForgotPass extends HttpServlet {
 		String otp = StringEscapeUtils.escapeHtml4(request.getParameter("otp"));
 		String otp_send = StringEscapeUtils.escapeHtml4(request.getParameter("otpSend"));
 		try {
-			OTPSend = decrypt(otp_send);
+			OTPSend = AES.decrypt(otp_send, KeyGenerator2.getSecretKey());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.print(otp_send);
-		System.out.print(OTPSend);
-		
-		
-
-		// Category(Header)
-		List<Category> clist = category.getAllCategory1();
+				List<Category> clist = category.getAllCategory1();
 		request.setAttribute("cList", clist);
 		List<Category> clist2 = category.getAllCategory2();
 		request.setAttribute("cList2", clist2);
@@ -99,11 +95,5 @@ public class VerifyAccountForgotPass extends HttpServlet {
 	public String getServletInfo() {
 		return "Short description";
 	}
-	public static String decrypt(String encryptedText) throws Exception {
-	    SecretKeySpec keySpec = new SecretKeySpec(Constant.SECRET_KEY.getBytes(), "AES");
-	    Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-	    cipher.init(Cipher.DECRYPT_MODE, keySpec);
-	    byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(encryptedText));
-	    return new String(decrypted, StandardCharsets.UTF_8);
-	  }
+	
 }

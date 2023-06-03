@@ -22,9 +22,11 @@ import DaoImpl.CategoryDAOImpl;
 import DaoImpl.UserDAOImpl;
 import Entity.Category;
 import Entity.User;
+import Util.AES;
 import Util.Constant;
 import Util.CsrfTokenUtil;
-import Util.PasswordEncoder;
+import Util.KeyGenerator2;
+
 @WebServlet(urlPatterns = { "/verify" })
 public class VerifyAccountSignUpController extends HttpServlet {
 
@@ -63,8 +65,8 @@ public class VerifyAccountSignUpController extends HttpServlet {
 		String otp = StringEscapeUtils.escapeHtml4(request.getParameter("otp"));
 		String otp_send = StringEscapeUtils.escapeHtml4(request.getParameter("otpSend"));
 		try {
-			OTPSend = decrypt(otp_send);
-			pass = PasswordEncoder.decrypt(passEncoder);
+			OTPSend = AES.decrypt(otp_send, KeyGenerator2.getSecretKey());
+			pass = AES.decrypt(passEncoder, KeyGenerator2.getSecretKey());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -113,11 +115,5 @@ public class VerifyAccountSignUpController extends HttpServlet {
 		return "Short description";
 	}
 
-	public static String decrypt(String encryptedText) throws Exception {
-		SecretKeySpec keySpec = new SecretKeySpec(Constant.SECRET_KEY.getBytes(), "AES");
-		Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-		cipher.init(Cipher.DECRYPT_MODE, keySpec);
-		byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(encryptedText));
-		return new String(decrypted, StandardCharsets.UTF_8);
-	}
+	
 }

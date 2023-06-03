@@ -16,7 +16,7 @@ import DAO.UserDAO;
 import DaoImpl.UserDAOImpl;
 import Entity.User;
 import Util.CsrfTokenUtil;
-import Util.PasswordEncoder;
+
 @WebServlet(urlPatterns = { "/login" })
 public class LoginController extends HttpServlet {
 

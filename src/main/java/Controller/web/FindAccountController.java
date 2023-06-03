@@ -22,8 +22,10 @@ import DaoImpl.CategoryDAOImpl;
 import DaoImpl.UserDAOImpl;
 import Entity.Category;
 import Entity.User;
+import Util.AES;
 import Util.Constant;
 import Util.CsrfTokenUtil;
+import Util.KeyGenerator2;
 @WebServlet(urlPatterns = { "/findAccount" })
 public class FindAccountController extends HttpServlet {
 
@@ -43,11 +45,11 @@ public class FindAccountController extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		
 		String csrfToken = request.getParameter("csrf_token");
-	    System.out.println(csrfToken);
+	    //System.out.println(csrfToken);
 		if (csrfToken == null || !csrfToken.equals(request.getSession().getAttribute("csrf_token"))) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			response.getWriter().write("Invalid CSRF token");
-			System.out.println(request.getSession().getAttribute("csrf_token"));
+			//System.out.println(request.getSession().getAttribute("csrf_token"));
 		    return;
 		}
 		//Tạo token mới lên session
@@ -61,7 +63,7 @@ public class FindAccountController extends HttpServlet {
             //Được đổi pass
         	String otp = dao.getRandom();
         	try {
-				OTP = encryptOTP(otp);
+				OTP = AES.encrypt(otp,KeyGenerator2.getSecretKey());
 			} catch (NoSuchPaddingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -70,7 +72,7 @@ public class FindAccountController extends HttpServlet {
 				e.printStackTrace();
 			}
 			System.out.print(otp);
-			System.out.print(OTP);
+			
         	//Category(Header)
     		List<Category> clist = category.getAllCategory1();
     		request.setAttribute("cList", clist);
@@ -107,12 +109,5 @@ public class FindAccountController extends HttpServlet {
 	public String getServletInfo() {
 		return "Short description";
 	}
-	public static String encryptOTP(String OTP) throws Exception{
-		
-		SecretKeySpec keySpec = new SecretKeySpec(Constant.SECRET_KEY.getBytes(), "AES");
-	    Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-	    cipher.init(Cipher.ENCRYPT_MODE, keySpec);
-	    byte[] encrypted = cipher.doFinal(OTP.getBytes(StandardCharsets.UTF_8));
-	    return Base64.getEncoder().encodeToString(encrypted);
-	}
+	
 }

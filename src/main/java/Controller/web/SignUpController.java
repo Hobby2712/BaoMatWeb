@@ -25,10 +25,11 @@ import DaoImpl.CategoryDAOImpl;
 import DaoImpl.UserDAOImpl;
 import Entity.Category;
 import Entity.User;
+import Util.AES;
 import Util.Constant;
 import Util.CsrfTokenUtil;
+import Util.KeyGenerator2;
 
-import Util.PasswordEncoder;
 
 @WebServlet(urlPatterns = { "/signup" })
 public class SignUpController extends HttpServlet {
@@ -96,12 +97,14 @@ public class SignUpController extends HttpServlet {
 				// dc signup
 				String otp = dao.getRandom();				
 				try {
-					OTP = PasswordEncoder.encrypt(otp);
-					passEncoder = PasswordEncoder.encrypt(pass);
+					OTP = AES.encrypt(otp, KeyGenerator2.getSecretKey());
+					passEncoder = AES.encrypt(pass, KeyGenerator2.getSecretKey());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				System.out.print(otp);
+				
 				request.setAttribute("user", user);
 				request.setAttribute("pass", passEncoder);
 				request.setAttribute("email", email);
